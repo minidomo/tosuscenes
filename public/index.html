@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="style/main.css">
+    <script src="scripts/reconnecting-websocket-iife.min.js"></script>
+    <script type="module" src="scripts/countUp.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1/tsparticles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-snow@1/tsparticles.preset.snow.min.js"></script>
+</head>
+
+<body>
+
+    <div id="main">
+        <div id="screenContainer">
+            <div id="tsparticles"></div>
+
+            <div id="defaultScreen">
+                <div class="footer">
+                    <div id="defaultScreenTitleContainer">
+                        <div id="defaultScreenTitle"></div>
+                        <div id="defaultScreenSubtitle"></div>
+                    </div>
+                    <div id="defaultScreenNowPlayingContainer">
+                        <div id="defaultScreenNowPlayingText">now playing</div>
+                        <div id="defaultScreenSongMetadata"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="lineUpScreen" class="hide">
+                <div id="lineUpScreenTitleContainer">
+                    <div id="lineUpScreenTitle">Yeehaw Cup 3 Spring 2022</div>
+                    <div id="lineUpScreenSubtitle">Winners Bracket RO16</div>
+                </div>
+                <div id="lineUpScreenColumns">
+                    <div id="lineUpScreenRed">
+                        <div id="lineUpScreenRedImage"></div>
+                        <div id="lineUpScreenRedText">TEAM RED</div>
+                        <div id="lineUpScreenRedTeamName">the nation</div>
+                        <div id="lineUpScreenRedPlayersContainer">
+                            <div class="lineUpScreenPlayer">minidomo</div>
+                            <div class="lineUpScreenPlayer">BTMC</div>
+                        </div>
+                    </div>
+                    <div id="lineUpScreenBlue">
+                        <div id="lineUpScreenBlueImage"></div>
+                        <div id="lineUpScreenBlueText">TEAM BLUE</div>
+                        <div id="lineUpScreenBlueTeamName">keqing</div>
+                        <div id="lineUpScreenBluePlayersContainer">
+                            <div class="lineUpScreenPlayer">fieryrage</div>
+                            <div class="lineUpScreenPlayer">FGSky</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mapScreen" class="hide">
+
+            </div>
+
+            <div id="matchScreen" class="hide">
+                <div id="top">
+                    <div id="scoreBlue">
+                        <div id="scoreNowBlue"></div>
+                        <div id="scoreMaxBlue"></div>
+                    </div>
+                    <div id="teamBlue">
+                        <div id="teamBlueText">Team Blue</div>
+                        <div id="teamBlueName"></div>
+                    </div>
+                    <div id="teamRed">
+                        <div id="teamRedText">Team Red</div>
+                        <div id="teamRedName"></div>
+                    </div>
+                    <div id="scoreRed">
+                        <div id="scoreNowRed"></div>
+                        <div id="scoreMaxRed"></div>
+                    </div>
+                </div>
+                <div id="bottom">
+                    <div id="commentator">Commentator</div>
+                    <div id="chats"></div>
+                    <div id="playScoreBlue"></div>
+                    <div id="playScoreRed"></div>
+                    <div id="nowPlayingContainer">
+                        <div id="nowPlayingText">Now Playing</div>
+                        <div id="mapContainer">
+                            <div id="overlay"></div>
+                            <div id="mapTitle"></div>
+                            <div id="mapDifficulty"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="winnerScreen" class="hide">
+
+            </div>
+
+        </div>
+        <div id="controls">
+            <div id="screenControlContainer">
+                <div id="defaultScreenButtonContainer">
+                    <button id="defaultScreenButton">Default</button>
+                </div>
+                <div id="lineUpScreenButtonContainer">
+                    <button id="lineUpScreenButton">Line Up</button>
+                </div>
+                <div id="mapScreenButtonContainer">
+                    <button id="mapScreenButton">Maps</button>
+                </div>
+                <div id="matchScreenButtonContainer">
+                    <button id="matchScreenButton">Match</button>
+                </div>
+                <div id="winnerScreenButtonContainer">
+                    <button id="winnerScreenButton">Winner</button>
+                </div>
+            </div>
+            <div id="loadButton">
+                Load
+            </div>
+        </div>
+    </div>
+    <script src="scripts/index.js"></script>
+</body>
+
+</html>
