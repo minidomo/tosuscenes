@@ -1,15 +1,15 @@
 /**
- * 
- * @param {number} delay 
+ *
+ * @param {number} delay
  * @returns {Promise<any>}
  */
-const wait = (delay) => {
+function wait(delay) {
     return new Promise(resolve => {
         setTimeout(resolve, delay);
     });
-};
+}
 
-const initTsParticles = () => {
+function initTsParticles() {
     loadSnowPreset(tsParticles);
 
     tsParticles.load('tsparticles', {
@@ -36,13 +36,12 @@ const initTsParticles = () => {
         },
         preset: 'snow',
     });
-};
+}
 
-const initSocket = () => {
+function initSocket() {
     const socket = io();
 
-    socket.on('load config', data => {
-        const config = JSON.parse(data);
+    socket.on('load config', config => {
         document.getElementById('defaultScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('defaultScreenSubtitle').innerHTML = config.tournament.subtitle;
 
@@ -59,7 +58,7 @@ const initSocket = () => {
         /** @type {HTMLDivElement} */
         let playersContainer;
 
-        playersContainer = document.getElementById('lineUpScreenRedPlayersContainer')
+        playersContainer = document.getElementById('lineUpScreenRedPlayersContainer');
         $(playersContainer).empty();
         config.tournament.teams.red.players.forEach(playerName => {
             const playerDiv = document.createElement('span');
@@ -68,7 +67,7 @@ const initSocket = () => {
             playersContainer.appendChild(playerDiv);
         });
 
-        playersContainer = document.getElementById('lineUpScreenBluePlayersContainer')
+        playersContainer = document.getElementById('lineUpScreenBluePlayersContainer');
         $(playersContainer).empty();
         config.tournament.teams.blue.players.forEach(playerName => {
             const playerDiv = document.createElement('span');
@@ -76,14 +75,20 @@ const initSocket = () => {
             playerDiv.innerHTML = playerName;
             playersContainer.appendChild(playerDiv);
         });
+    });
 
-
+    socket.on('scene change', sceneState => {
+        if (sceneState.prevScene) {
+            $(`#${sceneState.prevScene}`).fadeOut('fast', () => loadScreenData(sceneState.curScene));
+        } else {
+            loadScreenData(sceneState.curScene);
+        }
     });
 
     return socket;
-};
+}
 
-const initGosuSocket = () => {
+function initGosuSocket() {
     const gosuSocket = new ReconnectingWebSocket('ws://127.0.0.1:24050/ws');
 
     const songMetadata = document.getElementById('defaultScreenSongMetadata');
@@ -103,7 +108,7 @@ const initGosuSocket = () => {
 
     gosuSocket.addEventListener('message', event => {
         const data = JSON.parse(event.data);
-        // console.log('socket message', data);
+        // Console.log('socket message', data);
         if (data.menu.bm) {
             const bm = data.menu.bm;
 
@@ -115,45 +120,39 @@ const initGosuSocket = () => {
     });
 
     return gosuSocket;
-};
+}
 
-const hideScreens = async () => {
+async function hideScreens() {
     let screens = document.getElementsByClassName('screen');
     for (const screen of screens) {
         $(screen).fadeOut('fast');
     }
     await wait(1000);
-};
+}
 
 /**
- * 
- * @param {'default'|'lineUp'|'map'|'match'|'winner'} screenName 
+ *
+ * @param {'defaultScreen'|'lineUpScreen'|'mapScreen'|'matchScreen'|'winnerScreen'} screenName
  */
-const loadScreenData = (screenName) => {
-    const tsparticlesDiv = document.getElementById('tsparticles');
+function loadScreenData(screenName) {
     switch (screenName) {
-        case 'default': {
-            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg-logo.png")');
+        case 'defaultScreen': {
             $('#defaultScreen').fadeIn('fast');
             break;
         }
-        case 'lineUp': {
-            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+        case 'lineUpScreen': {
             $('#lineUpScreen').fadeIn('fast');
             break;
         }
-        case 'map': {
-            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+        case 'mapScreen': {
             $('#mapScreen').fadeIn('fast');
             break;
         }
-        case 'match': {
-            // tsparticlesDiv.removeAttribute('style');
+        case 'matchScreen': {
             $('#matchScreen').fadeIn('fast');
             break;
         }
-        case 'winner': {
-            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+        case 'winnerScreen': {
             $('#winnerScreen').fadeIn('fast');
             break;
         }
@@ -162,7 +161,7 @@ const loadScreenData = (screenName) => {
             break;
         }
     }
-};
+}
 
 (async () => {
     await hideScreens();
@@ -172,36 +171,35 @@ const loadScreenData = (screenName) => {
     const gosuSocket = initGosuSocket();
     socket.emit('load config');
 
-    loadScreenData('default');
+    // LoadScreenData('default');
 
-    /** @type {Map<string, HTMLDivElement>} */
-    const sceneMap = new Map();
-    sceneMap
-        .set('defaultScreenButton', document.getElementById('defaultScreen'))
-        .set('lineUpScreenButton', document.getElementById('lineUpScreen'))
-        .set('mapScreenButton', document.getElementById('mapScreen'))
-        .set('matchScreenButton', document.getElementById('matchScreen'))
-        .set('winnerScreenButton', document.getElementById('winnerScreen'));
+    // /** @type {Map<string, HTMLDivElement>} */
+    // const sceneMap = new Map();
+    // sceneMap
+    //     .set('defaultScreenButton', document.getElementById('defaultScreen'))
+    //     .set('lineUpScreenButton', document.getElementById('lineUpScreen'))
+    //     .set('mapScreenButton', document.getElementById('mapScreen'))
+    //     .set('matchScreenButton', document.getElementById('matchScreen'))
+    //     .set('winnerScreenButton', document.getElementById('winnerScreen'));
 
-    document.getElementById('screenControlContainer')
-        .querySelectorAll('button')
-        .forEach(e => {
-            e.addEventListener('click', function () {
-                sceneMap.forEach((val, key) => {
-                    if (key !== this.id && val.getAttribute('style').length === 0) {
-                        $(val).fadeOut('fast', () => {
-                            const [, screenType] = this.id.match(/^(.+)Screen/);
-                            loadScreenData(screenType);
-                        });
-                    }
-                });
-            });
-        });
+    // document.getElementById('screenControlContainer')
+    //     .querySelectorAll('button')
+    //     .forEach(e => {
+    //         e.addEventListener('click', function () {
+    //             sceneMap.forEach((val, key) => {
+    //                 if (key !== this.id && val.getAttribute('style').length === 0) {
+    //                     $(val).fadeOut('fast', () => {
+    //                         const [, screenType] = this.id.match(/^(.+)Screen/);
+    //                         loadScreenData(screenType);
+    //                     });
+    //                 }
+    //             });
+    //         });
+    //     });
 })();
 
 
-
-// let socket = new ReconnectingWebSocket('ws://' + location.host + '/ws');
+// Let socket = new ReconnectingWebSocket('ws://' + location.host + '/ws');
 // let mapid = document.getElementById('mapid');
 
 // // NOW PLAYING

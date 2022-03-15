@@ -63,13 +63,10 @@ html {
     z-index: -1;
 }
 
-#main {
+#screenContainer {
     font-size: 30px;
     font-family: Puente Medium, Helvetica, sans-serif;
     font-weight: normal;
-}
-
-#screenContainer {
     width: 1920px;
     height: 1080px;
     position: relative;

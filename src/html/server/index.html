@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <link rel="stylesheet" href="style/main.css">
+    <script src="scripts/reconnecting-websocket-iife.min.js"></script>
+    <script type="module" src="scripts/countUp.min.js"></script>
+    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
+        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
+        crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1/tsparticles.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-snow@1/tsparticles.preset.snow.min.js"></script>
+</head>
+
+<body>
+    <div id="screenContainer">
+        <div id="screenBg"></div>
+        <div id="tsparticles"></div>
+
+        <div id="defaultScreen" class="screen">
+            <div id="defaultScreenBg" class="bg"></div>
+            <div id="defaultScreenContainer">
+                <div class="footer">
+                    <div id="defaultScreenTitleContainer">
+                        <div id="defaultScreenTitle"></div>
+                        <div id="defaultScreenSubtitle"></div>
+                    </div>
+                    <div id="defaultScreenNowPlayingContainer">
+                        <div id="defaultScreenNowPlayingText">now playing</div>
+                        <div id="defaultScreenSongMetadata"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="lineUpScreen" class="screen">
+            <div id="lineUpScreenBg" class="bg"></div>
+            <div id="lineUpScreenContainer">
+                <div id="lineUpScreenMetadataContainer">
+                    <div id="lineUpScreenTournamentInfoContainer">
+                        <span id="lineUpScreenTitle"></span>
+                        <span id="lineUpScreenSubtitle"></span>
+                    </div>
+                    <div id="lineUpScreenMatchInfoContainer">
+                        <span id="lineUpScreenBracket"></span>
+                        <span id="lineUpScreenRound"></span>
+                    </div>
+                </div>
+                <div id="lineUpScreenColumnsContainer">
+                    <div id="lineUpScreenRed">
+                        <div id="lineUpScreenRedImageContainer" class="lineUpScreenImageContainer">
+                            <img id="lineUpScreenRedImage" src="" alt="" class="lineUpScreenImage">
+                        </div>
+                        <div id="lineUpScreenRedText" class="lineUpScreenTeamText">TEAM RED</div>
+                        <div id="lineUpScreenRedTeamName" class="lineUpScreenTeamName"></div>
+                        <div id="lineUpScreenRedPlayersContainer" class="lineUpScreenPlayersContainer"></div>
+                    </div>
+                    <div id="lineUpScreenBlue">
+                        <div id="lineUpScreenBlueImageContainer" class="lineUpScreenImageContainer">
+                            <img id="lineUpScreenBlueImage" src="" alt="" class="lineUpScreenImage">
+                        </div>
+                        <div id="lineUpScreenBlueText" class="lineUpScreenTeamText">TEAM BLUE</div>
+                        <div id="lineUpScreenBlueTeamName" class="lineUpScreenTeamName"></div>
+                        <div id="lineUpScreenBluePlayersContainer" class="lineUpScreenPlayersContainer"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mapScreen" class="screen">
+            <div id="mapScreenBg" class="bg"></div>
+
+        </div>
+
+        <div id="matchScreen" class="screen">
+            <div id="matchScreenBg" class="bg"></div>
+            <div id="top">
+                <div id="scoreBlue">
+                    <div id="scoreNowBlue"></div>
+                    <div id="scoreMaxBlue"></div>
+                </div>
+                <div id="teamBlue">
+                    <div id="teamBlueText">Team Blue</div>
+                    <div id="teamBlueName"></div>
+                </div>
+                <div id="teamRed">
+                    <div id="teamRedText">Team Red</div>
+                    <div id="teamRedName"></div>
+                </div>
+                <div id="scoreRed">
+                    <div id="scoreNowRed"></div>
+                    <div id="scoreMaxRed"></div>
+                </div>
+            </div>
+            <div id="bottom">
+                <div id="commentator">Commentator</div>
+                <div id="chats"></div>
+                <div id="playScoreBlue"></div>
+                <div id="playScoreRed"></div>
+                <div id="nowPlayingContainer">
+                    <div id="nowPlayingText">Now Playing</div>
+                    <div id="mapContainer">
+                        <div id="overlay"></div>
+                        <div id="mapTitle"></div>
+                        <div id="mapDifficulty"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="winnerScreen" class="screen">
+            <div id="winnerScreenBg" class="bg"></div>
+
+        </div>
+    </div>
+    <script src="scripts/index.js"></script>
+</body>
+
+</html>

@@ -1,19 +1,24 @@
-import express from 'express';
+import * as express from 'express';
 import { Server } from 'socket.io';
 import { createServer } from 'http';
-import fs from 'fs';
+import * as fs from 'fs';
+import * as path from 'path';
 
 const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-const PORT = 50423;
-const configPath = 'config.json';
+app.use(express.static(path.join(__dirname, '../src/html/server')));
 
-app.use(express.static('./public'));
+const configPath = path.join(__dirname, '../src/config.json');
+const getConfig = () => {
+    const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
+    return JSON.parse(rawConfig);
+};
 
-server.listen(PORT, () => {
-    console.log(`listening at http://localhost:${PORT}/`);
+const port = getConfig().server.port;
+server.listen(port, () => {
+    console.log(`Listening at http://localhost:${port}/\nResolution: 1920x1080`);
 });
 
 io.on('connection', socket => {
@@ -21,17 +26,6 @@ io.on('connection', socket => {
         .then(set => {
             console.log(`${socket.id} connected | active users: ${set.size}`);
         });
-
-    socket.on('load config', () => {
-        console.log('loading config');
-        const config = fs.readFileSync(configPath, { encoding: 'utf-8' });
-        socket.emit('load config', config);
-    });
-
-    socket.on('save config', config => {
-        fs.writeFileSync(configPath, JSON.stringify(config, null, 4), { encoding: 'utf-8' });
-        socket.emit('save config');
-    });
 
     socket.on('disconnect', reason => {
         io.allSockets()
@@ -43,4 +37,18 @@ io.on('connection', socket => {
                 console.log(`${socket.id} disconnected ${info}| active users: ${set.size}`);
             });
     });
+
+    socket.on('load config', () => {
+        const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
+        socket.emit('load config', JSON.parse(rawConfig));
+    });
+
+    socket.on('save config', configData => {
+        fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
+        socket.emit('save config');
+    });
 });
+
+export function getIO() {
+    return io;
+}
