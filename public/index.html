@@ -19,53 +19,66 @@
 
     <div id="main">
         <div id="screenContainer">
+            <div id="screenBg"></div>
             <div id="tsparticles"></div>
 
-            <div id="defaultScreen">
-                <div class="footer">
-                    <div id="defaultScreenTitleContainer">
-                        <div id="defaultScreenTitle"></div>
-                        <div id="defaultScreenSubtitle"></div>
-                    </div>
-                    <div id="defaultScreenNowPlayingContainer">
-                        <div id="defaultScreenNowPlayingText">now playing</div>
-                        <div id="defaultScreenSongMetadata"></div>
-                    </div>
-                </div>
-            </div>
-
-            <div id="lineUpScreen" class="hide">
-                <div id="lineUpScreenTitleContainer">
-                    <div id="lineUpScreenTitle">Yeehaw Cup 3 Spring 2022</div>
-                    <div id="lineUpScreenSubtitle">Winners Bracket RO16</div>
-                </div>
-                <div id="lineUpScreenColumns">
-                    <div id="lineUpScreenRed">
-                        <div id="lineUpScreenRedImage"></div>
-                        <div id="lineUpScreenRedText">TEAM RED</div>
-                        <div id="lineUpScreenRedTeamName">the nation</div>
-                        <div id="lineUpScreenRedPlayersContainer">
-                            <div class="lineUpScreenPlayer">minidomo</div>
-                            <div class="lineUpScreenPlayer">BTMC</div>
+            <div id="defaultScreen" class="screen">
+                <div id="defaultScreenBg" class="bg"></div>
+                <div id="defaultScreenContainer">
+                    <div class="footer">
+                        <div id="defaultScreenTitleContainer">
+                            <div id="defaultScreenTitle"></div>
+                            <div id="defaultScreenSubtitle"></div>
                         </div>
-                    </div>
-                    <div id="lineUpScreenBlue">
-                        <div id="lineUpScreenBlueImage"></div>
-                        <div id="lineUpScreenBlueText">TEAM BLUE</div>
-                        <div id="lineUpScreenBlueTeamName">keqing</div>
-                        <div id="lineUpScreenBluePlayersContainer">
-                            <div class="lineUpScreenPlayer">fieryrage</div>
-                            <div class="lineUpScreenPlayer">FGSky</div>
+                        <div id="defaultScreenNowPlayingContainer">
+                            <div id="defaultScreenNowPlayingText">now playing</div>
+                            <div id="defaultScreenSongMetadata"></div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div id="mapScreen" class="hide">
+            <div id="lineUpScreen" class="screen">
+                <div id="lineUpScreenBg" class="bg"></div>
+                <div id="lineUpScreenContainer">
+                    <div id="lineUpScreenMetadataContainer">
+                        <div id="lineUpScreenTournamentInfoContainer">
+                            <span id="lineUpScreenTitle"></span>
+                            <span id="lineUpScreenSubtitle"></span>
+                        </div>
+                        <div id="lineUpScreenMatchInfoContainer">
+                            <span id="lineUpScreenBracket"></span>
+                            <span id="lineUpScreenRound"></span>
+                        </div>
+                    </div>
+                    <div id="lineUpScreenColumnsContainer">
+                        <div id="lineUpScreenRed">
+                            <div id="lineUpScreenRedImageContainer" class="lineUpScreenImageContainer">
+                                <img id="lineUpScreenRedImage" src="" alt="" class="lineUpScreenImage">
+                            </div>
+                            <div id="lineUpScreenRedText" class="lineUpScreenTeamText">TEAM RED</div>
+                            <div id="lineUpScreenRedTeamName" class="lineUpScreenTeamName"></div>
+                            <div id="lineUpScreenRedPlayersContainer" class="lineUpScreenPlayersContainer"></div>
+                        </div>
+                        <div id="lineUpScreenBlue">
+                            <div id="lineUpScreenBlueImageContainer" class="lineUpScreenImageContainer">
+                                <img id="lineUpScreenBlueImage" src="" alt="" class="lineUpScreenImage">
+                            </div>
+                            <div id="lineUpScreenBlueText" class="lineUpScreenTeamText">TEAM BLUE</div>
+                            <div id="lineUpScreenBlueTeamName" class="lineUpScreenTeamName"></div>
+                            <div id="lineUpScreenBluePlayersContainer" class="lineUpScreenPlayersContainer"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="mapScreen" class="screen">
+                <div id="mapScreenBg" class="bg"></div>
 
             </div>
 
-            <div id="matchScreen" class="hide">
+            <div id="matchScreen" class="screen">
+                <div id="matchScreenBg" class="bg"></div>
                 <div id="top">
                     <div id="scoreBlue">
                         <div id="scoreNowBlue"></div>
@@ -100,7 +113,8 @@
                 </div>
             </div>
 
-            <div id="winnerScreen" class="hide">
+            <div id="winnerScreen" class="screen">
+                <div id="winnerScreenBg" class="bg"></div>
 
             </div>
 

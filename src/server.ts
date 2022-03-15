@@ -1,11 +1,11 @@
-const express = require('express');
-const app = express();
-const http = require('http');
-const server = http.createServer(app);
-const { Server } = require("socket.io");
-const io = new Server(server);
+import express from 'express';
+import { Server } from 'socket.io';
+import { createServer } from 'http';
+import fs from 'fs';
 
-const fs = require('fs');
+const app = express();
+const server = createServer(app);
+const io = new Server(server);
 
 const PORT = 50423;
 const configPath = 'config.json';
@@ -17,9 +17,11 @@ server.listen(PORT, () => {
 });
 
 io.on('connection', socket => {
-    console.log(`${socket.id} connected`);
+    io.allSockets()
+        .then(set => {
+            console.log(`${socket.id} connected | active users: ${set.size}`);
+        });
 
-    // TODO case config doesnt exist
     socket.on('load config', () => {
         console.log('loading config');
         const config = fs.readFileSync(configPath, { encoding: 'utf-8' });
@@ -29,5 +31,16 @@ io.on('connection', socket => {
     socket.on('save config', config => {
         fs.writeFileSync(configPath, JSON.stringify(config, null, 4), { encoding: 'utf-8' });
         socket.emit('save config');
+    });
+
+    socket.on('disconnect', reason => {
+        io.allSockets()
+            .then(set => {
+                let info = '';
+                if (reason) {
+                    info = `- ${reason} `;
+                }
+                console.log(`${socket.id} disconnected ${info}| active users: ${set.size}`);
+            });
     });
 });

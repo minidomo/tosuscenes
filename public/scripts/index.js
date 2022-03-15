@@ -1,3 +1,14 @@
+/**
+ * 
+ * @param {number} delay 
+ * @returns {Promise<any>}
+ */
+const wait = (delay) => {
+    return new Promise(resolve => {
+        setTimeout(resolve, delay);
+    });
+};
+
 const initTsParticles = () => {
     loadSnowPreset(tsParticles);
 
@@ -21,7 +32,7 @@ const initTsParticles = () => {
             enable: false,
         },
         background: {
-            image: 'url(\'../static/background.png\')',
+            opacity: 0,
         },
         preset: 'snow',
     });
@@ -34,6 +45,39 @@ const initSocket = () => {
         const config = JSON.parse(data);
         document.getElementById('defaultScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('defaultScreenSubtitle').innerHTML = config.tournament.subtitle;
+
+        document.getElementById('lineUpScreenTitle').innerHTML = config.tournament.title;
+        document.getElementById('lineUpScreenSubtitle').innerHTML = config.tournament.subtitle;
+        document.getElementById('lineUpScreenBracket').innerHTML = `${config.tournament.bracket} Bracket`;
+        document.getElementById('lineUpScreenRound').innerHTML = config.tournament.round;
+
+        document.getElementById('lineUpScreenRedImage').setAttribute('src', `${config.tournament.teams.red.image}`);
+        document.getElementById('lineUpScreenRedTeamName').innerHTML = config.tournament.teams.red.name;
+        document.getElementById('lineUpScreenBlueImage').setAttribute('src', `${config.tournament.teams.blue.image}`);
+        document.getElementById('lineUpScreenBlueTeamName').innerHTML = config.tournament.teams.blue.name;
+
+        /** @type {HTMLDivElement} */
+        let playersContainer;
+
+        playersContainer = document.getElementById('lineUpScreenRedPlayersContainer')
+        $(playersContainer).empty();
+        config.tournament.teams.red.players.forEach(playerName => {
+            const playerDiv = document.createElement('span');
+            playerDiv.setAttribute('class', 'lineUpScreenPlayer');
+            playerDiv.innerHTML = playerName;
+            playersContainer.appendChild(playerDiv);
+        });
+
+        playersContainer = document.getElementById('lineUpScreenBluePlayersContainer')
+        $(playersContainer).empty();
+        config.tournament.teams.blue.players.forEach(playerName => {
+            const playerDiv = document.createElement('span');
+            playerDiv.setAttribute('class', 'lineUpScreenPlayer');
+            playerDiv.innerHTML = playerName;
+            playersContainer.appendChild(playerDiv);
+        });
+
+
     });
 
     return socket;
@@ -73,21 +117,62 @@ const initGosuSocket = () => {
     return gosuSocket;
 };
 
+const hideScreens = async () => {
+    let screens = document.getElementsByClassName('screen');
+    for (const screen of screens) {
+        $(screen).fadeOut('fast');
+    }
+    await wait(1000);
+};
+
 /**
  * 
  * @param {'default'|'lineUp'|'map'|'match'|'winner'} screenName 
  */
 const loadScreenData = (screenName) => {
-
+    const tsparticlesDiv = document.getElementById('tsparticles');
+    switch (screenName) {
+        case 'default': {
+            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg-logo.png")');
+            $('#defaultScreen').fadeIn('fast');
+            break;
+        }
+        case 'lineUp': {
+            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+            $('#lineUpScreen').fadeIn('fast');
+            break;
+        }
+        case 'map': {
+            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+            $('#mapScreen').fadeIn('fast');
+            break;
+        }
+        case 'match': {
+            // tsparticlesDiv.removeAttribute('style');
+            $('#matchScreen').fadeIn('fast');
+            break;
+        }
+        case 'winner': {
+            // tsparticlesDiv.setAttribute('style', 'background: #000 url("../static/bg.png")');
+            $('#winnerScreen').fadeIn('fast');
+            break;
+        }
+        default: {
+            console.error(`bad screen name: ${screenName}`);
+            break;
+        }
+    }
 };
 
-(() => {
+(async () => {
+    await hideScreens();
+
     initTsParticles();
     const socket = initSocket();
     const gosuSocket = initGosuSocket();
     socket.emit('load config');
 
-    console.log(tsParticles);
+    loadScreenData('default');
 
     /** @type {Map<string, HTMLDivElement>} */
     const sceneMap = new Map();
@@ -103,16 +188,15 @@ const loadScreenData = (screenName) => {
         .forEach(e => {
             e.addEventListener('click', function () {
                 sceneMap.forEach((val, key) => {
-                    if (key === this.id) {
-                        val.className = '';
-                    } else {
-                        val.className = 'hide';
+                    if (key !== this.id && val.getAttribute('style').length === 0) {
+                        $(val).fadeOut('fast', () => {
+                            const [, screenType] = this.id.match(/^(.+)Screen/);
+                            loadScreenData(screenType);
+                        });
                     }
                 });
             });
         });
-
-
 })();
 
 
