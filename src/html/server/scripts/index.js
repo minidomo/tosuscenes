@@ -78,6 +78,14 @@ function initSocket() {
             playersContainer.appendChild(playerDiv);
         });
 
+        /** Match data */
+        document.getElementById('matchScreenRedImage').setAttribute('src', config.tournament.teams.red.image);
+        document.getElementById('matchScreenRedTeamName').innerHTML = config.tournament.teams.red.name;
+
+        document.getElementById('matchScreenBlueImage').setAttribute('src', config.tournament.teams.blue.image);
+        document.getElementById('matchScreenBlueTeamName').innerHTML = config.tournament.teams.blue.name;
+
+
         /** Winner data */
         document.getElementById('winnerScreenImage').setAttribute('src', config.tournament.winner.image);
 
