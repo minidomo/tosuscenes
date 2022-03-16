@@ -45,11 +45,11 @@ function initSocket() {
         /** @type {HTMLDivElement} */
         let playersContainer;
 
-        /** default data */
+        /** Default data */
         document.getElementById('defaultScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('defaultScreenSubtitle').innerHTML = config.tournament.subtitle;
 
-        /** line up data */
+        /** Line up data */
         document.getElementById('lineUpScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('lineUpScreenSubtitle').innerHTML = config.tournament.subtitle;
         document.getElementById('lineUpScreenBracket').innerHTML = `${config.tournament.bracket} Bracket`;
@@ -78,7 +78,7 @@ function initSocket() {
             playersContainer.appendChild(playerDiv);
         });
 
-        /** winner data */
+        /** Winner data */
         document.getElementById('winnerScreenImage').setAttribute('src', config.tournament.winner.image);
 
         document.getElementById('winnerScreenTitle').innerHTML = config.tournament.title;
@@ -173,9 +173,9 @@ async function hideScreens() {
 }
 
 /**
- * 
+ *
  * @param {string} jQueryString
- * @returns {boolean} 
+ * @returns {boolean}
  */
 function isFadeOut(jQueryString) {
     const e = $(jQueryString);
@@ -184,8 +184,8 @@ function isFadeOut(jQueryString) {
 }
 
 /**
- * 
- * @param {string} jQueryString 
+ *
+ * @param {string} jQueryString
  */
 function tryFadeIn(jQueryString) {
     if (isFadeOut(jQueryString)) {
@@ -194,8 +194,8 @@ function tryFadeIn(jQueryString) {
 }
 
 /**
- * 
- * @param {string} jQueryString 
+ *
+ * @param {string} jQueryString
  */
 function tryFadeOut(jQueryString) {
     if (!isFadeOut(jQueryString)) {
