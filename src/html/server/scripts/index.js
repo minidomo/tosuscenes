@@ -42,21 +42,23 @@ function initSocket() {
     const socket = io();
 
     socket.on('load config', config => {
+        /** @type {HTMLDivElement} */
+        let playersContainer;
+
+        /** default data */
         document.getElementById('defaultScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('defaultScreenSubtitle').innerHTML = config.tournament.subtitle;
 
+        /** line up data */
         document.getElementById('lineUpScreenTitle').innerHTML = config.tournament.title;
         document.getElementById('lineUpScreenSubtitle').innerHTML = config.tournament.subtitle;
         document.getElementById('lineUpScreenBracket').innerHTML = `${config.tournament.bracket} Bracket`;
         document.getElementById('lineUpScreenRound').innerHTML = config.tournament.round;
 
-        document.getElementById('lineUpScreenRedImage').setAttribute('src', `${config.tournament.teams.red.image}`);
+        document.getElementById('lineUpScreenRedImage').setAttribute('src', config.tournament.teams.red.image);
         document.getElementById('lineUpScreenRedTeamName').innerHTML = config.tournament.teams.red.name;
-        document.getElementById('lineUpScreenBlueImage').setAttribute('src', `${config.tournament.teams.blue.image}`);
+        document.getElementById('lineUpScreenBlueImage').setAttribute('src', config.tournament.teams.blue.image);
         document.getElementById('lineUpScreenBlueTeamName').innerHTML = config.tournament.teams.blue.name;
-
-        /** @type {HTMLDivElement} */
-        let playersContainer;
 
         playersContainer = document.getElementById('lineUpScreenRedPlayersContainer');
         $(playersContainer).empty();
@@ -72,6 +74,46 @@ function initSocket() {
         config.tournament.teams.blue.players.forEach(playerName => {
             const playerDiv = document.createElement('span');
             playerDiv.setAttribute('class', 'lineUpScreenPlayer');
+            playerDiv.innerHTML = playerName;
+            playersContainer.appendChild(playerDiv);
+        });
+
+        /** winner data */
+        document.getElementById('winnerScreenImage').setAttribute('src', config.tournament.winner.image);
+
+        document.getElementById('winnerScreenTitle').innerHTML = config.tournament.title;
+        document.getElementById('winnerScreenSubtitle').innerHTML = config.tournament.subtitle;
+        document.getElementById('winnerScreenBracket').innerHTML = `${config.tournament.bracket} Bracket`;
+        document.getElementById('winnerScreenRound').innerHTML = config.tournament.round;
+
+        /** @type {string} */
+        let winnerTeamTextColorHex;
+        /** @type {HTMLDivElement} */
+        const winnerTeamTextElement = document.getElementById('winnerScreenTeamText');
+        winnerTeamTextElement.innerHTML = `TEAM ${config.tournament.winner.color}`;
+        switch (config.tournament.winner.color) {
+            case 'RED': {
+                winnerTeamTextColorHex = '#A91418';
+                break;
+            }
+            case 'BLUE': {
+                winnerTeamTextColorHex = '#1461A5';
+                break;
+            }
+            default: {
+                console.error(`invalid winner color: ${config.tournament.winner.color}`);
+                break;
+            }
+        }
+        winnerTeamTextElement.setAttribute('style', `background-color: ${winnerTeamTextColorHex}`);
+
+        document.getElementById('winnerScreenTeamName').innerHTML = config.tournament.winner.name;
+
+        playersContainer = document.getElementById('winnerScreenPlayersContainer');
+        $(playersContainer).empty();
+        config.tournament.teams.red.players.forEach(playerName => {
+            const playerDiv = document.createElement('span');
+            playerDiv.setAttribute('class', 'winnerScreenPlayer');
             playerDiv.innerHTML = playerName;
             playersContainer.appendChild(playerDiv);
         });
@@ -131,28 +173,69 @@ async function hideScreens() {
 }
 
 /**
+ * 
+ * @param {string} jQueryString
+ * @returns {boolean} 
+ */
+function isFadeOut(jQueryString) {
+    const e = $(jQueryString);
+    const style = e.attr('style');
+    return typeof style === 'string' && style.includes('display: none;');
+}
+
+/**
+ * 
+ * @param {string} jQueryString 
+ */
+function tryFadeIn(jQueryString) {
+    if (isFadeOut(jQueryString)) {
+        $(jQueryString).fadeIn('fast');
+    }
+}
+
+/**
+ * 
+ * @param {string} jQueryString 
+ */
+function tryFadeOut(jQueryString) {
+    if (!isFadeOut(jQueryString)) {
+        $(jQueryString).fadeOut('fast');
+    }
+}
+
+/**
  *
  * @param {'defaultScreen'|'lineUpScreen'|'mapScreen'|'matchScreen'|'winnerScreen'} screenName
  */
 function loadScreenData(screenName) {
     switch (screenName) {
         case 'defaultScreen': {
+            tryFadeIn('#tsparticles');
+            tryFadeIn('#screenBg');
             $('#defaultScreen').fadeIn('fast');
             break;
         }
         case 'lineUpScreen': {
+            tryFadeIn('#tsparticles');
+            tryFadeIn('#screenBg');
             $('#lineUpScreen').fadeIn('fast');
             break;
         }
         case 'mapScreen': {
+            tryFadeIn('#tsparticles');
+            tryFadeIn('#screenBg');
             $('#mapScreen').fadeIn('fast');
             break;
         }
         case 'matchScreen': {
+            tryFadeOut('#tsparticles');
+            tryFadeOut('#screenBg');
             $('#matchScreen').fadeIn('fast');
             break;
         }
         case 'winnerScreen': {
+            tryFadeIn('#tsparticles');
+            tryFadeIn('#screenBg');
             $('#winnerScreen').fadeIn('fast');
             break;
         }
@@ -170,32 +253,6 @@ function loadScreenData(screenName) {
     const socket = initSocket();
     const gosuSocket = initGosuSocket();
     socket.emit('load config');
-
-    // LoadScreenData('default');
-
-    // /** @type {Map<string, HTMLDivElement>} */
-    // const sceneMap = new Map();
-    // sceneMap
-    //     .set('defaultScreenButton', document.getElementById('defaultScreen'))
-    //     .set('lineUpScreenButton', document.getElementById('lineUpScreen'))
-    //     .set('mapScreenButton', document.getElementById('mapScreen'))
-    //     .set('matchScreenButton', document.getElementById('matchScreen'))
-    //     .set('winnerScreenButton', document.getElementById('winnerScreen'));
-
-    // document.getElementById('screenControlContainer')
-    //     .querySelectorAll('button')
-    //     .forEach(e => {
-    //         e.addEventListener('click', function () {
-    //             sceneMap.forEach((val, key) => {
-    //                 if (key !== this.id && val.getAttribute('style').length === 0) {
-    //                     $(val).fadeOut('fast', () => {
-    //                         const [, screenType] = this.id.match(/^(.+)Screen/);
-    //                         loadScreenData(screenType);
-    //                     });
-    //                 }
-    //             });
-    //         });
-    //     });
 })();
 
 

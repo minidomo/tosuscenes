@@ -12,6 +12,7 @@ window.addEventListener('DOMContentLoaded', () => {
             const match = e.id.match(sceneRegex);
             if (match) {
                 const [, curScene] = match;
+                if (curScene === prevScene) return;
                 const ret = {
                     curScene,
                     prevScene,

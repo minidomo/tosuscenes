@@ -14,6 +14,11 @@
 }
 
 @font-face {
+    font-family: "Torus SemiBold";
+    src: url("fonts/Torus\ SemiBold.otf");
+}
+
+@font-face {
     font-family: "Puente Light";
     src: url("fonts/puente-light.ttf");
 }
@@ -49,11 +54,15 @@ html {
 }
 
 #defaultScreenBg {
-    background-image: url('../static/bg-logo.png');
+    background-image: url('../static/bg-1-logo.png');
 }
 
 #lineUpScreenBg {
-    background-image: url('../static/bg.png');
+    background-image: url('../static/bg-1.png');
+}
+
+#winnerScreenBg {
+    background-image: url('../static/bg-2.png');
 }
 
 #tsparticles {
@@ -73,17 +82,21 @@ html {
 }
 
 #defaultScreen {
+    font-family: Torus SemiBold, Helvetica, sans-serif;
+    color: white;
     width: 100%;
     height: 100%;
 }
 
 #defaultScreenContainer {
-    color: white;
     text-align: center;
 }
 
-#defaultScreenTitle {
+#defaultScreenTitleContainer {  
     font-family: Puente Light, Helvetica, sans-serif;
+}
+
+#defaultScreenTitle {
     font-size: 82px;
 }
 
@@ -96,7 +109,7 @@ html {
 }
 
 #defaultScreenNowPlayingText {
-    font-family: Puente Light, Helvetica, sans-serif;
+    font-family: Torus Light, Helvetica, sans-serif;
     font-size: 18px;
 }
 
@@ -105,13 +118,13 @@ html {
 }
 
 #lineUpScreen {
+    font-family: Torus SemiBold, Helvetica, sans-serif;
+    color: white;
     width: 100%;
     height: 100%;
 }
 
 #lineUpScreenContainer {
-    font-family: Torus Bold, Helvetica, sans-serif;
-    color: white;
     width: 100%;
     height: 100%;
     /* https://stackoverflow.com/questions/4879788/padding-adds-to-div-width-height */
@@ -126,7 +139,6 @@ html {
 }
 
 #lineUpScreenMatchInfoContainer {
-    font-family: Torus Regular, Helvetica, sans-serif;
     font-size: 28px;
 }
 
@@ -165,19 +177,19 @@ html {
     transform: translateY(-50%);
 }
 
-.lineUpScreenTeamText {
+.teamColorText {
     width: max-content;
-    padding: 2px 10px 4px 10px;
+    padding: 0 10px 4px 10px;
     font-size: 34px;
     border-radius: 5px;
 }
 
-.lineUpScreenTeamName {
+.teamName {
     background-color: white;
     color: black;
     width: max-content;
     font-size: 50px;
-    padding: 4px 20px 4px 20px;
+    padding: 0 20px 4px 20px;
     border-radius: 5px;
     margin: 16px 0 40px 0;
 }
@@ -199,7 +211,76 @@ html {
 
 #matchScreen {}
 
-#winnerScreen {}
+#winnerScreen {
+    height: 100%;
+    width: 100%;
+    font-family: Torus SemiBold, Helvetica, sans-serif;
+    color: white;
+}
+
+#winnerScreenContainer {
+    width: 100%;
+    height: 100%;
+    /* https://stackoverflow.com/questions/4879788/padding-adds-to-div-width-height */
+    display: flow-root;
+    padding: 180px 180px 180px 180px;
+    box-sizing: border-box;
+}
+
+#winnerScreenWrapperContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+}
+
+#winnerScreenWrapperContainer>div {
+    width: 100%;
+    height: 100%;
+}
+
+#winnerScreenImage {
+    max-width: 300px;
+    max-height: 300px;
+    border-radius: 30px;
+    /* https://stackoverflow.com/questions/7273338/how-to-vertically-align-an-image-inside-a-div */
+    position: relative;
+    top: 50%;
+    left: 50%;
+    transform: translateY(-50%) translateX(-50%);
+}
+
+#winnerScreenDataWrapperContainer {
+    padding: 0 0 0 140px;
+}
+
+#winnerScreenTournamentInfoContainer {
+    font-family: Puente Light, Helvetica, sans-serif;
+    font-size: 36px;
+}
+
+#winnerScreenMatchInfoContainer {
+    font-size: 28px;
+}
+
+#winnerScreenText {
+    font-family: Torus Bold, Helvetica, sans-serif;
+    font-size: 120px;
+    margin: 50px 0 70px 0;
+}
+
+#winnerScreenPlayersContainer {
+    display: flex;
+    flex-flow: column wrap;
+    align-content: flex-start;
+    height: 180px;
+}
+
+#winnerScreenPlayersContainer>span {
+    height: 36px;
+    width: max-content;
+    padding: 0 0 0 20px;
+}
 
 .footer {
     position: absolute;
@@ -214,302 +295,3 @@ html {
 #screenControlContainer>div {
     display: inline-block;
 }
-
-/* .odometer.odometer-auto-theme {
-    font-size: 24px !important;
-    font-family: "Nexa Bold", Helvetica, sans-serif !important;
-    font-weight: normal !important;
-}
-
-.odometer.odometer-auto-theme .odometer-digit .odometer-digit-inner,
-.odometer.odometer-theme-default .odometer-digit .odometer-digit-inner {
-    padding-left: 5px !important;
-    padding-right: 5px !important;
-    margin-left: -5px !important;
-    margin-right: -5px !important;
-}
-
-#top {
-    position: absolute;
-    width: 1920px;
-    height: 202px;
-    background-image: url('../static/top.png');
-    background-repeat: no-repeat;
-    transition: ease-in-out 500ms;
-    z-index: 0;
-    background-size: cover;
-}
-
-#bottom {
-    position: absolute;
-    bottom: 0px;
-    width: 1920px;
-    height: 202px;
-    background-image: url('../static/bottomplay.png');
-    background-repeat: no-repeat;
-    transition: ease-in-out 200ms;
-    z-index: 0;
-    background-size: cover;
-}
-
-#scoreBlue {
-    position: absolute;
-    left: 50px;
-    top: 50px;
-    font-size: 30px;
-    display: flex;
-    color: #007E93;
-    height: 100px;
-}
-
-#scoreNowBlue,
-#scoreNowRed {
-    font-size: 80px !important;
-    width: 50px !important;
-    text-align: center;
-}
-
-#scoreMaxBlue,
-#scoreMaxRed {
-    margin-top: auto;
-    padding-bottom: 20px;
-}
-
-#scoreRed {
-    position: absolute;
-    right: 50px;
-    top: 50px;
-    font-size: 30px;
-    display: flex;
-    color: #8E0029;
-}
-
-#teamBlue {
-    position: absolute;
-    left: 200px;
-    top: 50px;
-    font-size: 30px;
-    color: #007E93;
-    transition: ease-in-out 500ms;
-}
-
-#teamBlueName {
-    padding: 10px 30px 10px 30px;
-    width: 500px;
-    color: white;
-    background-color: #007E93;
-    border-radius: 25px;
-}
-
-#teamBlueText {
-    padding-left: 20px;
-}
-
-#teamRedText {
-    padding-right: 20px;
-}
-
-#teamRed {
-    position: absolute;
-    right: 200px;
-    top: 50px;
-    text-align: right;
-    font-size: 30px;
-    color: #8E0029;
-    transition: ease-in-out 500ms;
-}
-
-#teamRedName {
-    padding: 10px 30px 10px 30px;
-    width: 500px;
-    color: white;
-    background-color: #8E0029;
-    border-radius: 25px;
-}
-
-#commentator {
-    position: absolute;
-    padding: 5px 30px 5px 30px;
-    left: 30px;
-    bottom: 130px;
-    color: #007E93;
-    background-color: white;
-    border-radius: 25px;
-    box-shadow: 0px 0px 20px -3px black;
-}
-
-#nowPlayingContainer {
-    position: absolute;
-    right: 30px;
-    bottom: 10px;
-    width: 400px;
-    height: 150px;
-    text-align: center;
-    align-content: center;
-}
-
-#nowPlayingText {
-    position: relative;
-    padding: 5px 20px 5px 20px;
-    margin: 2px 50px 0px 50px;
-    margin-bottom: -10px;
-    color: #007E93;
-    background-color: white;
-    border-radius: 25px;
-    box-shadow: 0px 0px 20px -5px black;
-    z-index: 1;
-}
-
-#playScoreBlue {
-    position: absolute;
-    padding: 5px 30px 5px 30px;
-    text-align: center;
-    border-radius: 25px;
-    left: 500px;
-    bottom: 80px;
-    height: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 400px;
-    background-color: #007E93;
-    color: white;
-    font-family: Nexa Bold;
-    font-size: 40px;
-    line-height: 60px;
-    display: block;
-    transition: ease-in-out 500ms;
-}
-
-#playScoreRed {
-    position: absolute;
-    padding: 5px 30px 5px 30px;
-    text-align: center;
-    border-radius: 25px;
-    right: 500px;
-    bottom: 80px;
-    height: 60px;
-    padding-left: 15px;
-    padding-right: 15px;
-    width: 400px;
-    background-color: #8E0029;
-    color: white;
-    font-family: Nexa Bold;
-    font-size: 40px;
-    line-height: 60px;
-    display: block;
-    transition: ease-in-out 500ms;
-}
-
-#mapContainer {
-    position: relative;
-    padding-top: 20px;
-    height: 100px;
-    width: 100%;
-    background-color: black;
-    background-size: cover;
-    border-radius: 25px;
-    z-index: -1;
-    box-shadow: 0px 0px 20px -3px black;
-}
-
-#overlay {
-    position: fixed;
-    transform: translateY(-20px);
-    height: 120px;
-    width: 400px;
-    z-index: 0;
-    background-color: rgba(0, 0, 0, 0.50);
-    border-radius: 25px;
-}
-
-#mapTitle,
-#mapDifficulty {
-    position: relative;
-    padding-left: 5%;
-    width: 90%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    z-index: 0;
-}
-
-#chats {
-    background: #0A0329;
-    position: absolute;
-    bottom: 0px;
-    left: 479px;
-    width: 913px;
-    height: 142px;
-    border-radius: 25px;
-    bottom: 2px;
-    overflow-y: scroll;
-    overflow-x: hidden;
-    padding: 5px 15px;
-    font-size: 18px;
-    font-family: Gothic-b, monospace;
-    transition: ease-in-out 500ms;
-}
-
-.chat {
-    display: flex;
-    text-align: left;
-}
-
-.chatTime {
-    width: 5%;
-    color: silver;
-    padding-right: 10px;
-}
-
-.wholeChat {
-    width: 95%;
-    display: flex;
-}
-
-.chatName {
-    color: white;
-    white-space: nowrap;
-    width: max-content;
-}
-
-.chatText {
-    white-space: normal;
-    word-wrap: break-word;
-    overflow: hidden;
-}
-
-.unknown {
-    color: yellow;
-}
-
-.bot {
-    color: #FF66AA;
-}
-
-.left {
-    color: #1fd0ed;
-}
-
-.right {
-    color: #ed1855;
-}
-
-::-webkit-scrollbar {
-    width: 10px;
-}
-
-::-webkit-scrollbar-track {
-    margin-top: 25px;
-    margin-bottom: 25px;
-    visibility: 0;
-}
-
-::-webkit-scrollbar-thumb {
-    background: grey;
-    border-radius: 10px;
-}
-
-.text {
-    display: flex;
-    justify-content: center;
-} */

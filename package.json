@@ -1,7 +1,7 @@
 {
   "name": "tosuscenes",
   "productName": "tosuscenes",
-  "version": "1.0.0",
+  "version": "1.0.0-alpha",
   "description": "Scenes for osu! tournaments.",
   "main": "dist/index.js",
   "scripts": {
