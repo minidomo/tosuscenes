@@ -92,7 +92,7 @@ html {
     text-align: center;
 }
 
-#defaultScreenTitleContainer {  
+#defaultScreenTitleContainer {
     font-family: Puente Light, Helvetica, sans-serif;
 }
 
@@ -209,7 +209,12 @@ html {
 
 #mapScreen {}
 
-#matchScreen {}
+#matchScreen {
+    height: 100%;
+    width: 100%;
+    font-family: Torus SemiBold, Helvetica, sans-serif;
+    color: black;
+}
 
 #winnerScreen {
     height: 100%;

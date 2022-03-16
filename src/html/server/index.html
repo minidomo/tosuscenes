@@ -81,37 +81,82 @@
 
         <div id="matchScreen" class="screen">
             <div id="matchScreenBg" class="bg"></div>
-            <div id="top">
-                <div id="scoreBlue">
-                    <div id="scoreNowBlue"></div>
-                    <div id="scoreMaxBlue"></div>
+
+            <div id="matchScreenTopContainer">
+                <div id="matchScreenRedContainer">
+                    <div id="matchScreenRedImageContainer">
+                        <img id="matchScreenRedImage" src="" alt="">
+                    </div>
+                    <div id="matchScreenRedMetadataContainer">
+                        <div id="matchScreenRedTeamText">TEAM RED</div>
+                        <div id="matchScreenRedTeamName"></div>
+                    </div>
+                    <div id="matchScreenRedPointsContainer"></div>
                 </div>
-                <div id="teamBlue">
-                    <div id="teamBlueText">Team Blue</div>
-                    <div id="teamBlueName"></div>
-                </div>
-                <div id="teamRed">
-                    <div id="teamRedText">Team Red</div>
-                    <div id="teamRedName"></div>
-                </div>
-                <div id="scoreRed">
-                    <div id="scoreNowRed"></div>
-                    <div id="scoreMaxRed"></div>
-                </div>
-            </div>
-            <div id="bottom">
-                <div id="commentator">Commentator</div>
-                <div id="chats"></div>
-                <div id="playScoreBlue"></div>
-                <div id="playScoreRed"></div>
-                <div id="nowPlayingContainer">
-                    <div id="nowPlayingText">Now Playing</div>
-                    <div id="mapContainer">
-                        <div id="overlay"></div>
-                        <div id="mapTitle"></div>
-                        <div id="mapDifficulty"></div>
+                <div id="matchScreenMetadataContainer">
+                    <div id="matchScreenTournamentInfoContainer">
+                        <span id="matchScreenTitle"></span>
+                        <span id="matchScreenSubtitle"></span>
+                    </div>
+                    <div id="matchScreenMatchInfoContainer">
+                        <span id="matchScreenBracket"></span>
+                        <span id="matchScreenRound"></span>
                     </div>
                 </div>
+                <div id="matchScreenBlueContainer">
+                    <div id="matchScreenBlueImageContainer">
+                        <img id="matchScreenBlueImage" src="" alt="">
+                    </div>
+                    <div id="matchScreenBlueMetadataContainer">
+                        <div id="matchScreenBlueTeamText">TEAM BLUE</div>
+                        <div id="matchScreenBlueTeamName"></div>
+                    </div>
+                    <div id="matchScreenBluePointsContainer"></div>
+                </div>
+            </div>
+
+            <div id="matchScreenBottomContainer">
+                <div id="matchScreenChatContainer"></div>
+                <div id="matchScreenMapMetadataContainer">
+                    <div id="matchScreenMapTitle"></div>
+                    <div id="matchScreenMapBotContainer">
+                        <div id="matchScreenMapMapperContainer">
+                            <span id="matchScreenMapMapperText">mapper</span>
+                            <span id="matchScreenMapMapperName"></span>
+                        </div>
+                        <div id="matchScreenMapDifficultyContainer">
+                            <span id="matchScreenMapDifficultyText">difficulty</span>
+                            <span id="matchScreenMapDifficultyName"></span>
+                        </div>
+                    </div>
+                </div>
+                <div id="matchScreenMapSettingsContainer">
+                    <div id="matchScreenMapSettingsBasicContainer">
+                        <span id="matchScreenMapCsText">CS </span>
+                        <span id="matchScreenMapCsValue"></span>
+                        <span id="matchScreenMapArText"> / AR </span>
+                        <span id="matchScreenMapArValue"></span>
+                        <span id="matchScreenMapOdText"> / OD </span>
+                        <span id="matchScreenMapOdValue"></span>
+                    </div>
+                    <div id="matchScreenMapStarRatingContainer">
+                        <span id="matchScreenMapStarRatingText">Star Rating </span>
+                        <span id="matchScreenMapStarRatingValue"></span>
+                    </div>
+                    <div id="matchScreenMapLengthContainer">
+                        <span id="matchScreenMapLengthText">Length </span>
+                        <span id="matchScreenMapLengthValue"></span>
+                    </div>
+                    <div id="matchScreenMapBpmContainer">
+                        <span id="matchScreenMapBpmText">BPM </span>
+                        <span id="matchScreenMapBpmValue"></span>
+                    </div>
+                </div>
+                <div id="matchScreenScoresContainer">
+                    <div id="matchScreenScoreRed"></div>
+                    <div id="matchScreenScoreBlue"></div>
+                </div>
+                <div id="matchScreenDifferenceBar"></div>
             </div>
         </div>
 
