@@ -225,17 +225,38 @@ html {
 #matchScreenTeamContainer {
     width: 100%;
     height: 100%;
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+}
+
+#matchScreenRedContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 100%;
+    gap: 10px;
+}
+
+#matchScreenBlueContainer {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    height: 100%;
+    gap: 10px;
+}
+
+.matchScreenTeamWrapperContainer {
+    height: 100%;
     /* https://stackoverflow.com/questions/4879788/padding-adds-to-div-width-height */
     display: flow-root;
     padding: 30px 30px 0 30px;
     box-sizing: border-box;
 }
 
-#matchScreenRedContainer {
-    display: flex;
-    flex-flow: row nowrap;
+.matchTeamColorText {
     width: max-content;
-    height: 100%;
+    padding: 0 10px 4px 10px;
+    font-size: 26px;
+    border-radius: 5px;
 }
 
 .matchScreenImageContainer {
@@ -256,19 +277,91 @@ html {
     font-size: 38px;
     padding: 0 10px 2px 10px;
     border-radius: 5px;
-    margin: 10px 0 0 0;
+}
+
+.matchScreenPoint {
+    width: 35px;
+    height: 35px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 2px;
+    font-size: 0;
+    display: flow-root;
+    box-sizing: border-box;
+}
+
+#matchScreenRedPointsContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    gap: 6px;
+}
+
+#matchScreenBluePointsContainer {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    gap: 6px;
+}
+
+#matchScreenRedMetadataTopContainer {
+    display: flex;
+    flex-flow: row nowrap;
+    height: 35px;
+    gap: 6px;
+}
+
+#matchScreenBlueMetadataTopContainer {
+    display: flex;
+    flex-flow: row-reverse nowrap;
+    height: 35px;
+    gap: 6px;
 }
 
 #matchScreenRedTeamText {
     background-color: #A91418;
 }
 
-/* 
-.matchScreenTeamMetadataContainer {}
+#matchScreenBlueTeamText {
+    background-color: #1461A5;
+}
 
-.matchScreenTeamText {}
+#matchScreenRedMetadataContainer {
+    align-items: flex-start;
+}
 
-.matchScreenTeamName {} */
+#matchScreenBlueMetadataContainer {
+    align-items: flex-end;
+}
+
+.matchScreenTeamMetadataContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    gap: 10px;
+}
+
+#matchScreenMetadataContainer {
+    display: flex;
+    flex-flow: column nowrap;
+    align-items: center;
+    gap: 10px;
+}
+
+#matchScreenMetadataContainer>div {
+    width: max-content;
+}
+
+#matchScreenTournamentInfoContainer {
+    font-family: Puente Light, Helvetica, sans-serif;
+    font-size: 34px;
+}
+
+#matchScreenMatchInfoContainer {
+    font-size: 24px;
+    color: black;
+    background-color: white;
+    padding: 0 6px 0 6px;
+    border-radius: 4px;
+}
 
 #matchScreenBottomContainer {
     width: 100%;

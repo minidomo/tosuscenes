@@ -44,6 +44,8 @@ function initSocket() {
     socket.on('load config', config => {
         /** @type {HTMLDivElement} */
         let playersContainer;
+        /** @type {HTMLDivElement} */
+        let pointsContainer;
 
         /** Default data */
         document.getElementById('defaultScreenTitle').innerHTML = config.tournament.title;
@@ -63,28 +65,48 @@ function initSocket() {
         playersContainer = document.getElementById('lineUpScreenRedPlayersContainer');
         $(playersContainer).empty();
         config.tournament.teams.red.players.forEach(playerName => {
-            const playerDiv = document.createElement('span');
-            playerDiv.setAttribute('class', 'lineUpScreenPlayer');
-            playerDiv.innerHTML = playerName;
-            playersContainer.appendChild(playerDiv);
+            const playerSpan = document.createElement('span');
+            playerSpan.setAttribute('class', 'lineUpScreenPlayer');
+            playerSpan.innerHTML = playerName;
+            playersContainer.appendChild(playerSpan);
         });
 
         playersContainer = document.getElementById('lineUpScreenBluePlayersContainer');
         $(playersContainer).empty();
         config.tournament.teams.blue.players.forEach(playerName => {
-            const playerDiv = document.createElement('span');
-            playerDiv.setAttribute('class', 'lineUpScreenPlayer');
-            playerDiv.innerHTML = playerName;
-            playersContainer.appendChild(playerDiv);
+            const playerSpan = document.createElement('span');
+            playerSpan.setAttribute('class', 'lineUpScreenPlayer');
+            playerSpan.innerHTML = playerName;
+            playersContainer.appendChild(playerSpan);
         });
 
         /** Match data */
+        document.getElementById('matchScreenTitle').innerHTML = config.tournament.title;
+        document.getElementById('matchScreenSubtitle').innerHTML = config.tournament.subtitle;
+        document.getElementById('matchScreenBracket').innerHTML = `${config.tournament.bracket} Bracket`;
+        document.getElementById('matchScreenRound').innerHTML = config.tournament.round;
+
         document.getElementById('matchScreenRedImage').setAttribute('src', config.tournament.teams.red.image);
         document.getElementById('matchScreenRedTeamName').innerHTML = config.tournament.teams.red.name;
 
         document.getElementById('matchScreenBlueImage').setAttribute('src', config.tournament.teams.blue.image);
         document.getElementById('matchScreenBlueTeamName').innerHTML = config.tournament.teams.blue.name;
 
+        pointsContainer = document.getElementById('matchScreenRedPointsContainer');
+        $(pointsContainer).empty();
+        for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
+            const pointSpan = document.createElement('span');
+            pointSpan.setAttribute('class', 'matchScreenPoint');
+            pointsContainer.appendChild(pointSpan);
+        }
+
+        pointsContainer = document.getElementById('matchScreenBluePointsContainer');
+        $(pointsContainer).empty();
+        for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
+            const pointSpan = document.createElement('span');
+            pointSpan.setAttribute('class', 'matchScreenPoint');
+            pointsContainer.appendChild(pointSpan);
+        }
 
         /** Winner data */
         document.getElementById('winnerScreenImage').setAttribute('src', config.tournament.winner.image);
@@ -120,19 +142,22 @@ function initSocket() {
         playersContainer = document.getElementById('winnerScreenPlayersContainer');
         $(playersContainer).empty();
         config.tournament.teams.red.players.forEach(playerName => {
-            const playerDiv = document.createElement('span');
-            playerDiv.setAttribute('class', 'winnerScreenPlayer');
-            playerDiv.innerHTML = playerName;
-            playersContainer.appendChild(playerDiv);
+            const playerSpan = document.createElement('span');
+            playerSpan.setAttribute('class', 'winnerScreenPlayer');
+            playerSpan.innerHTML = playerName;
+            playersContainer.appendChild(playerSpan);
         });
     });
 
-    socket.on('scene change', sceneState => {
-        if (sceneState.prevScene) {
-            $(`#${sceneState.prevScene}`).fadeOut('fast', () => loadScreenData(sceneState.curScene));
+    /** @type {string|undefined} */
+    let curScene;
+    socket.on('scene change', newScene => {
+        if (typeof curScene === 'string' && newScene !== curScene) {
+            $(`#${curScene}`).fadeOut('fast', () => loadScreenData(newScene));
         } else {
-            loadScreenData(sceneState.curScene);
+            loadScreenData(newScene);
         }
+        curScene = newScene;
     });
 
     return socket;
