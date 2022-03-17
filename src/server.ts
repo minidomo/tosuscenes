@@ -44,11 +44,11 @@ io.on('connection', socket => {
     });
 });
 
-export function saveConfig(configData: Config) {
+export function saveConfig(configData: Configuration.Standard) {
     fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
 }
 
-export function getConfig(): Config {
+export function getConfig(): Configuration.Standard {
     const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
     return JSON.parse(rawConfig);
 }
