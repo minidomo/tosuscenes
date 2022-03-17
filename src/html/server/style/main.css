@@ -289,6 +289,13 @@ html {
     font-size: 0;
     display: flow-root;
     box-sizing: border-box;
+    transition: .5s;
+
+}
+
+.matchScreenPointWon {
+    background-color: #FAE9AE;
+    border-color: #FAE9AE;
 }
 
 #matchScreenRedPointsContainer {

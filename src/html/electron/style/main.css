@@ -4,7 +4,30 @@ html {
     margin: 0 0 0 0;
 }
 
+#controlsContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 10px;
+}
+
 #screenControlContainer {
     display: flex;
     flex-flow: row;
+}
+
+#configButtonContainer {
+    display: flex;
+    flex-flow: row;
+}
+
+#pointManagerContainer {
+    display: flex;
+    flex-flow: row;
+    gap: 10px;
+}
+
+.pointContainer {
+    display: flex;
+    flex-flow: column;
+    width: max-content;
 }

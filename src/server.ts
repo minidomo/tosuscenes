@@ -11,10 +11,6 @@ const io = new Server(server);
 app.use(express.static(path.join(__dirname, '../src/html/server')));
 
 const configPath = path.join(__dirname, '../src/config.json');
-const getConfig = () => {
-    const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
-    return JSON.parse(rawConfig);
-};
 
 const port = getConfig().server.port;
 server.listen(port, () => {
@@ -39,15 +35,23 @@ io.on('connection', socket => {
     });
 
     socket.on('load config', () => {
-        const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
-        socket.emit('load config', JSON.parse(rawConfig));
+        socket.emit('load config', getConfig());
     });
 
     socket.on('save config', configData => {
-        fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
+        saveConfig(configData);
         socket.emit('save config');
     });
 });
+
+export function saveConfig(configData: Config) {
+    fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
+}
+
+export function getConfig(): Config {
+    const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
+    return JSON.parse(rawConfig);
+}
 
 export function getIO() {
     return io;

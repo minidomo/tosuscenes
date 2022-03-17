@@ -97,6 +97,9 @@ function initSocket() {
         for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
             const pointSpan = document.createElement('span');
             pointSpan.setAttribute('class', 'matchScreenPoint');
+            if (i < config.tournament.teams.red.points) {
+                pointSpan.classList.toggle('matchScreenPointWon');
+            }
             pointsContainer.appendChild(pointSpan);
         }
 
@@ -105,6 +108,9 @@ function initSocket() {
         for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
             const pointSpan = document.createElement('span');
             pointSpan.setAttribute('class', 'matchScreenPoint');
+            if (i < config.tournament.teams.blue.points) {
+                pointSpan.classList.toggle('matchScreenPointWon');
+            }
             pointsContainer.appendChild(pointSpan);
         }
 
@@ -158,6 +164,58 @@ function initSocket() {
             loadScreenData(newScene);
         }
         curScene = newScene;
+    });
+
+    socket.on('point change', changeState => {
+        /** @type {string} */
+        let pointContainerQuery;
+        switch (changeState.teamColor) {
+            case 'red': {
+                pointContainerQuery = '#matchScreenRedPointsContainer';
+                break;
+            }
+            case 'blue': {
+                pointContainerQuery = '#matchScreenBluePointsContainer';
+                break;
+            }
+            default: {
+                console.error(`unknown teamColor: ${changeState.teamColor}`);
+                return;
+            }
+        }
+
+        /** @type {boolean} */
+        let increment;
+        switch (changeState.changeType) {
+            case 'increment': {
+                increment = true;
+                break;
+            }
+            case 'decrement': {
+                increment = false;
+                break;
+            }
+            default: {
+                console.error(`unknown changeType: ${changeState.changeType}`);
+                return;
+            }
+        }
+
+        const children = $(pointContainerQuery)
+            .children()
+            .filter((index, element) => {
+                if (increment) {
+                    return $(element).attr('class') === 'matchScreenPoint';
+                } else {
+                    return $(element).attr('class') === 'matchScreenPoint matchScreenPointWon';
+                }
+            });
+
+        if (increment) {
+            children.first().addClass('matchScreenPointWon');
+        } else {
+            children.last().removeClass('matchScreenPointWon');
+        }
     });
 
     return socket;

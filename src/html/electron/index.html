@@ -13,7 +13,7 @@
 </head>
 
 <body>
-    <div id="controls">
+    <div id="controlsContainer">
         <div id="screenControlContainer">
             <div id="defaultScreenButtonContainer">
                 <button id="defaultScreenButton">Default</button>
@@ -31,8 +31,38 @@
                 <button id="winnerScreenButton">Winner</button>
             </div>
         </div>
-        <div id="loadButtonContainer">
-            <button id="loadButton">Load</button>
+        <div id="configButtonContainer">
+            <div id="sendButtonContainer">
+                <button id="sendButton">Send</button>
+            </div>
+            <div id="saveButtonContainer">
+                <button id="saveButton">Save</button>
+            </div>
+        </div>
+
+        <div id="pointManagerContainer">
+            <div id="redPointContainer" class="pointContainer">
+                <div id="redPointTextContainer">
+                    <span id="redPointText">Red Points</span>
+                </div>
+                <div id="redPointIncrementButtonContainer">
+                    <button id="redPointIncrementButton">&#8593;</button>
+                </div>
+                <div id="redPointDecrementButtonContainer">
+                    <button id="redPointDecrementButton">&#8595;</button>
+                </div>
+            </div>
+            <div id="bluePointContainer" class="pointContainer">
+                <div id="bluePointTextContainer">
+                    <span id="bluePointText">Blue Points</span>
+                </div>
+                <div id="bluePointIncrementButtonContainer">
+                    <button id="bluePointIncrementButton">&#8593;</button>
+                </div>
+                <div id="bluePointDecrementButtonContainer">
+                    <button id="bluePointDecrementButton">&#8595;</button>
+                </div>
+            </div>
         </div>
     </div>
 </body>
