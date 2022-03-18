@@ -1,3 +1,5 @@
+import { CountUp } from './countUp.min.js';
+
 /**
  *
  * @param {number} delay
@@ -248,7 +250,31 @@ function initGosuSocket() {
     const matchMapSrValue = document.getElementById('matchScreenMapSrValue');
     const matchMapLengthValue = document.getElementById('matchScreenMapLengthValue');
     const matchMapBpmValue = document.getElementById('matchScreenMapBpmValue');
-    let prevBgPath = '';
+    const matchRedScoreValue = document.getElementById('matchScreenRedScoreValue');
+    const matchBlueScoreValue = document.getElementById('matchScreenBlueScoreValue');
+    const matchChatContainer = document.getElementById('matchScreenChatContainer');
+
+    /** @type {string|undefined} */
+    let prevBgPath;
+    /** @type {string|undefined} */
+    let prevScoreVisible;
+    /** @type {'red'|'blue'|'tie'} */
+    let prevScoreLead = 'tie';
+    let prevChatMessageNum = 0;
+    const score = {
+        red: {
+            value: 0,
+            animation: new CountUp('matchScreenRedScoreValue', 0, {
+                duration: 0.108, // Seconds
+            }),
+        },
+        blue: {
+            value: 0,
+            animation: new CountUp('matchScreenBlueScoreValue', 0, {
+                duration: 0.108, // Seconds
+            }),
+        },
+    };
 
     /**
      *
@@ -278,9 +304,55 @@ function initGosuSocket() {
         return num;
     }
 
+    function removeUnseenMessages(chatContainer) {
+        const sTop = chatContainer.prop('scrollTop');
+        if (sTop > 0) {
+            let sumHeight = 0;
+            chatContainer
+                .children()
+                .each((index, element) => {
+                    const curE = $(element);
+                    sumHeight += curE.height();
+                    if (sumHeight <= sTop) {
+                        curE.remove();
+                    }
+                });
+        }
+    }
+
+    // TODO remove
+    const tempTime = {
+        sVal: -1,
+        eVal: -1,
+        min: 2039420,
+        max: -1,
+        sum: 0,
+        count: 0,
+        start() {
+            this.sVal = performance.now();
+        },
+        end() {
+            this.eVal = performance.now();
+            const timeDiff = this.eVal - this.sVal;
+
+            this.count++;
+            this.sum += timeDiff;
+            this.min = Math.min(this.min, timeDiff);
+            this.max = Math.max(this.max, timeDiff);
+            const average = this.sum / this.count;
+            console.log(`${timeDiff.toFixed(3)} ms | ${this.min.toFixed(3)} ${this.max.toFixed(3)} ${average.toFixed(3)}`);
+        },
+    };
+
     gosuSocket.addEventListener('message', event => {
+        // If (tempTime.sVal !== -1) {
+        //     tempTime.end();
+        // }
+        // tempTime.start();
         const data = JSON.parse(event.data);
 
+
+        // TODO menu always here?
         if (data.menu.bm) {
             const bm = data.menu.bm;
 
@@ -323,6 +395,88 @@ function initGosuSocket() {
             }
 
             prevBgPath = bm.path.full;
+        }
+
+        if (data.tourney) {
+            const tourney = data.tourney;
+            // TODO manager always here?
+            const manager = tourney.manager;
+
+            if (prevScoreVisible !== manager.bools.scoreVisible) {
+                if (tourney.manager.bools.scoreVisible) {
+                    // Show scores, hide chat
+                    tryFadeOut('#matchScreenChatContainer');
+                    tryFadeIn('#matchScreenRedScoreContainer');
+                    tryFadeIn('#matchScreenBlueScoreContainer');
+                } else {
+                    // Hide scores, show chat
+                    tryFadeOut('#matchScreenRedScoreContainer');
+                    tryFadeOut('#matchScreenBlueScoreContainer');
+                    tryFadeIn('#matchScreenChatContainer');
+                }
+            }
+
+            if (manager.bools.scoreVisible) {
+                const redScore = manager.gameplay.score.left;
+                const blueScore = manager.gameplay.score.right;
+
+                if (score.red.value !== redScore) {
+                    score.red.animation.update(redScore);
+                }
+
+                if (score.blue.value !== blueScore) {
+                    score.blue.animation.update(blueScore);
+                }
+
+                if (redScore > blueScore && prevScoreLead !== 'red') {
+                    matchBlueScoreValue.classList.remove('matchScreenScoreLeading');
+                    matchRedScoreValue.classList.add('matchScreenScoreLeading');
+                    prevScoreLead = 'red';
+                } else if (redScore < blueScore && prevScoreLead !== 'blue') {
+                    matchRedScoreValue.classList.remove('matchScreenScoreLeading');
+                    matchBlueScoreValue.classList.add('matchScreenScoreLeading');
+                    prevScoreLead = 'blue';
+                } else if (prevScoreLead !== 'tie') {
+                    matchRedScoreValue.classList.remove('matchScreenScoreLeading');
+                    matchBlueScoreValue.classList.remove('matchScreenScoreLeading');
+                    prevScoreLead = 'tie';
+                }
+            } else if (prevChatMessageNum !== manager.chat.length) {
+                for (let i = prevChatMessageNum; i < manager.chat.left; i++) {
+                    const message = manager.chat[i];
+
+                    const chatMessageDiv = document.createElement('div');
+                    const chatMessageTimeDiv = document.createElement('div');
+                    const chatMessageNameDiv = document.createElement('div');
+                    const chatMessageBodyDiv = document.createElement('div');
+
+                    chatMessageDiv.classList.add('matchScreenChatMessageContainer', message.team);
+                    chatMessageTimeDiv.setAttribute('class', 'matchScreenChatMessageTime');
+                    chatMessageNameDiv.setAttribute('class', 'matchScreenChatMessageName');
+                    chatMessageBodyDiv.setAttribute('class', 'matchScreenChatMessageBody');
+
+                    chatMessageTimeDiv.innerHTML = message.time;
+                    chatMessageNameDiv.innerHTML = `${message.name}:`;
+                    chatMessageBodyDiv.innerHTML = message.messageBody;
+
+                    chatMessageDiv.append(chatMessageTimeDiv, chatMessageNameDiv, chatMessageBodyDiv);
+                    matchChatContainer.appendChild(chatMessageDiv);
+                }
+
+                const chatContainer = $('#matchScreenChatContainer');
+                chatContainer.animate({
+                    scrollTop: chatContainer.prop('scrollHeight'),
+                }, {
+                    complete() {
+                        removeUnseenMessages(chatContainer);
+                    },
+                });
+            }
+
+            score.red.value = manager.gameplay.score.left;
+            score.blue.value = manager.gameplay.score.right;
+            prevScoreVisible = tourney.manager.bools.scoreVisible;
+            prevChatMessageNum = manager.chat.length;
         }
     });
 

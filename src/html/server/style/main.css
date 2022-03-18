@@ -422,6 +422,13 @@ html {
     height: 50%;
 }
 
+#matchScreenMapContainer {
+    border: #5e5e5e solid 6px;
+    display: flow-root;
+    box-sizing: border-box;
+    padding: 0 5px 0 5px;
+}
+
 #matchScreenMapInfoContainer {
     height: 100%;
     display: flex;
@@ -441,7 +448,7 @@ html {
     width: 960px;
     height: 103px;
     object-fit: cover;
-    border-radius: 10px;
+    /* border-radius: 10px;  */
     /* https://stackoverflow.com/questions/25092391/how-to-dim-an-image-keeping-transparency-untouched-with-css-or-js */
     filter: brightness(50%);
 }
@@ -479,6 +486,67 @@ html {
 
 #matchScreenMapSettingsContainer>div {
     height: 19px;
+}
+
+.matchScreenScoreContainer {
+    display: flex;
+    align-items: center;
+    font-size: 46px;
+}
+
+#matchScreenBlueScoreContainer {
+    flex-flow: row;
+}
+
+#matchScreenRedScoreContainer {
+    flex-flow: row-reverse;
+    height: 50%;
+}
+
+#matchScreenBlueScoreValue {
+    margin: 0 0 0 20px;
+}
+
+#matchScreenRedScoreValue {
+    margin: 0 20px 0 0;
+}
+
+.matchScreenScoreLeading {
+    font-size: 56px;
+}
+
+#matchScreenChatContainer {
+    top: 0;
+    position: absolute;
+    width: 50%;
+    height: 100%;
+    display: flow-root;
+    box-sizing: border-box;
+    padding: 0 10px 10px 10px;
+    background-color: rgba(0, 0, 0, .2);
+    overflow: hidden;
+}
+
+
+.matchScreenChatMessageContainer {
+    display: flex;
+    flex-flow: row;
+    gap: 10px;
+    font-size: 16px;
+    width: 100%;
+}
+
+.matchScreenChatMessageTime {
+    flex: 0 0 70px;
+}
+
+.matchScreenChatMessageName {
+    flex: 0 0 160px;
+    text-align: right;
+}
+
+.matchScreenChatMessageBody, .matchScreenChatMessageTime {
+    font-family: Torus Regular, Helvetica, sans-serif;
 }
 
 /* winner screen */

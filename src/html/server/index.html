@@ -135,14 +135,18 @@
                 <div id="matchScreenBottomBg"></div>
                 <div id="matchScreenBottomWrapperContainer">
                     <div id="matchScreenBottomLeftContainer">
-                        <div id="matchScreenRedScoreContainer"></div>
+                        <div id="matchScreenRedScoreContainer" class="matchScreenScoreContainer">
+                            <div id="matchScreenRedScoreValue">0</div>
+                        </div>
                         <div id="matchScreenChatContainer"></div>
                     </div>
                     <div id="matchScreenBottomRightContainer">
-                        <div id="matchScreenBlueScoreContainer"></div>
+                        <div id="matchScreenBlueScoreContainer" class="matchScreenScoreContainer">
+                            <div id="matchScreenBlueScoreValue">0</div>
+                        </div>
                         <div id="matchScreenMapContainer">
                             <div id="matchScreenMapBgContainer">
-                                <img id="matchScreenMapBg" src="" alt="">
+                                <img id="matchScreenMapBg" src="" alt="bg">
                             </div>
                             <div id="matchScreenMapInfoContainer">
                                 <div id="matchScreenMapMetadataContainer">
@@ -228,7 +232,7 @@
             </div>
         </div>
     </div>
-    <script src="scripts/index.js"></script>
+    <script type="module" src="scripts/index.js"></script>
 </body>
 
 </html>
