@@ -81,6 +81,8 @@ html {
     position: relative;
 }
 
+/* default screen */
+
 #defaultScreen {
     font-family: Torus SemiBold, Helvetica, sans-serif;
     color: white;
@@ -116,6 +118,8 @@ html {
 #defaultScreenSongMetadata {
     font-size: 22px;
 }
+
+/* line up screen */
 
 #lineUpScreen {
     font-family: Torus SemiBold, Helvetica, sans-serif;
@@ -207,7 +211,11 @@ html {
     padding: 0 0 0 20px;
 }
 
+/* map screen */
+
 #mapScreen {}
+
+/* match screen top */
 
 #matchScreen {
     height: 100%;
@@ -219,7 +227,14 @@ html {
 #matchScreenTopContainer {
     width: 100%;
     height: 154px;
-    background-color: #3e3e3e;
+}
+
+#matchScreenTopBg {
+    width: 1920px;
+    height: 154px;
+    position: absolute;
+    background-image: url("../static/bg-top.png");
+    z-index: -10;
 }
 
 #matchScreenTeamContainer {
@@ -244,7 +259,7 @@ html {
     gap: 10px;
 }
 
-.matchScreenTeamWrapperContainer {
+#matchScreenTeamWrapperContainer {
     height: 100%;
     /* https://stackoverflow.com/questions/4879788/padding-adds-to-div-width-height */
     display: flow-root;
@@ -284,7 +299,7 @@ html {
     height: 35px;
     border-width: 2px;
     border-style: solid;
-    border-color: black;
+    border-color: #5e5e5e;
     border-radius: 2px;
     font-size: 0;
     display: flow-root;
@@ -370,13 +385,103 @@ html {
     border-radius: 4px;
 }
 
+/* match screen bottom container */
+
 #matchScreenBottomContainer {
     width: 100%;
     height: 206px;
     position: absolute;
     bottom: 0;
-    background-color: #3e3e3e;
 }
+
+#matchScreenBottomBg {
+    width: 1920px;
+    height: 206px;
+    position: absolute;
+    background-image: url("../static/bg-bot.png");
+    z-index: -10;
+}
+
+#matchScreenBottomWrapperContainer {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-flow: row;
+}
+
+#matchScreenBottomWrapperContainer>div {
+    width: 50%;
+}
+
+#matchScreenBottomRightContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+#matchScreenBottomRightContainer>div {
+    height: 50%;
+}
+
+#matchScreenMapInfoContainer {
+    height: 100%;
+    display: flex;
+    flex-flow: row;
+    align-items: center;
+    gap: 20px;
+    margin: 0 0 0 20px;
+}
+
+#matchScreenMapBgContainer {
+    position: absolute;
+    z-index: -1;
+    align-self: flex-start;
+}
+
+#matchScreenMapBg {
+    width: 960px;
+    height: 103px;
+    object-fit: cover;
+    border-radius: 10px;
+    /* https://stackoverflow.com/questions/25092391/how-to-dim-an-image-keeping-transparency-untouched-with-css-or-js */
+    filter: brightness(50%);
+}
+
+#matchScreenMapMetadataContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+#matchScreenMapBottomContainer {
+    display: flex;
+    flex-flow: row;
+    gap: 40px;
+    font-size: 16px;
+}
+
+#matchScreenMapTitle {
+    font-size: 20px;
+}
+
+#matchScreenMapMapperText, #matchScreenMapDifficultyText, .matchScreenMapSettingsTextFont {
+    font-family: Torus Light, Helvetica, sans-serif;
+}
+
+#matchScreenMapSettingsContainer {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 0 20px;
+    font-size: 16px;
+    height: 38px;
+    width: max-content;
+    /* add margin to make even with mapper/difficulty lines */
+    margin: 5px 0 0 0;
+}
+
+#matchScreenMapSettingsContainer>div {
+    height: 19px;
+}
+
+/* winner screen */
 
 #winnerScreen {
     height: 100%;

@@ -224,8 +224,6 @@ function initSocket() {
 function initGosuSocket() {
     const gosuSocket = new ReconnectingWebSocket('ws://127.0.0.1:24050/ws');
 
-    const songMetadata = document.getElementById('defaultScreenSongMetadata');
-
     gosuSocket.addEventListener('open', () => {
         console.log('socket open');
     });
@@ -239,16 +237,92 @@ function initGosuSocket() {
         console.log('socket error', event);
     });
 
+
+    const defaultSongMetadata = document.getElementById('defaultScreenSongMetadata');
+    const matchMapTitle = document.getElementById('matchScreenMapTitle');
+    const matchMapMapperName = document.getElementById('matchScreenMapMapperName');
+    const matchMapDifficultyName = document.getElementById('matchScreenMapDifficultyName');
+    const matchMapCsValue = document.getElementById('matchScreenMapCsValue');
+    const matchMapArValue = document.getElementById('matchScreenMapArValue');
+    const matchMapOdValue = document.getElementById('matchScreenMapOdValue');
+    const matchMapSrValue = document.getElementById('matchScreenMapSrValue');
+    const matchMapLengthValue = document.getElementById('matchScreenMapLengthValue');
+    const matchMapBpmValue = document.getElementById('matchScreenMapBpmValue');
+    let prevBgPath = '';
+
+    /**
+     *
+     * @param {HTMLElement} element
+     * @param {any} value
+     */
+    function trySetInnerHtml(element, value) {
+        let strVal = value;
+        if (typeof value !== 'string') strVal = `${value}`;
+        if (element.innerHTML !== strVal) {
+            element.innerHTML = strVal;
+        }
+    }
+
+    /**
+     *
+     * @param {number} stat
+     * @param {number} mantissa
+     * @returns {string}
+     */
+    function getStatString(stat, mantissa) {
+        const num = numbro(stat).format({
+            optionalMantissa: true,
+            trimMantissa: true,
+            mantissa,
+        });
+        return num;
+    }
+
     gosuSocket.addEventListener('message', event => {
         const data = JSON.parse(event.data);
-        // Console.log('socket message', data);
+
         if (data.menu.bm) {
             const bm = data.menu.bm;
 
-            const newSongMetadata = `${bm.metadata.artist} - '${bm.metadata.title}'`;
-            if (songMetadata.innerHTML !== newSongMetadata) {
-                songMetadata.innerHTML = newSongMetadata;
+            trySetInnerHtml(defaultSongMetadata, `${bm.metadata.artist} - '${bm.metadata.title}'`);
+            trySetInnerHtml(matchMapTitle, `${bm.metadata.artist} - ${bm.metadata.title}`);
+            trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
+            trySetInnerHtml(matchMapDifficultyName, bm.metadata.difficulty);
+            trySetInnerHtml(matchMapCsValue, getStatString(bm.stats.CS, 1));
+            trySetInnerHtml(matchMapArValue, getStatString(bm.stats.AR, 1));
+            trySetInnerHtml(matchMapOdValue, getStatString(bm.stats.OD, 1));
+
+            const bpmAverage = (bm.stats.BPM.min + bm.stats.BPM.max) / 2;
+            trySetInnerHtml(matchMapBpmValue, getStatString(bpmAverage, 1));
+
+            /** @type {number} */
+            let timeDuration;
+
+            // TODO might not work in tourney
+            const isDt = (data.menu.mods.num & 64) === 64;
+            const isHT = (data.menu.mods.num & 256) === 256;
+            if (isDt) {
+                timeDuration = Math.round(bm.time.mp3 / 1.5);
+            } else if (isHT) {
+                timeDuration = Math.round(bm.time.mp3 * 1.5);
+            } else {
+                timeDuration = bm.time.mp3;
             }
+            trySetInnerHtml(matchMapLengthValue, dayjs.duration(timeDuration).format('mm:ss'));
+
+
+            let sr = `${bm.stats.fullSR}*`;
+            trySetInnerHtml(matchMapSrValue, sr);
+
+            if (prevBgPath !== bm.path.full) {
+                const img = bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25');
+                // TODO url method inconsistent?
+                const url = `http://localhost:24050/Songs/${img}?a=${Math.random(10000)}`;
+                document.getElementById('matchScreenMapBg')
+                    .setAttribute('src', url);
+            }
+
+            prevBgPath = bm.path.full;
         }
     });
 
