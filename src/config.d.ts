@@ -1,34 +1,32 @@
 declare global {
-    namespace Configuration {
-        interface Team {
-            points: number,
-            image: string,
-            name: string,
-            players: string[],
-        }
+    interface ConfigTeam {
+        points: number,
+        image: string,
+        name: string,
+        players: string[],
+    }
 
-        interface Standard {
-            tournament: {
-                title: string,
-                subtitle: string,
-                bracket: string,
-                round: string,
-                individualMaxPoints: number,
-                teams: {
-                    red: Team,
-                    blue: Team,
-                },
-                winner: {
-                    color: 'RED' | 'BLUE',
-                    image: string,
-                    name: string,
-                    players: string[],
-                },
+    interface Config {
+        tournament: {
+            title: string,
+            subtitle: string,
+            bracket: string,
+            round: string,
+            individualMaxPoints: number,
+            teams: {
+                red: ConfigTeam,
+                blue: ConfigTeam,
             },
-            server: {
-                port: number,
+            winner: {
+                color: 'RED' | 'BLUE',
+                image: string,
+                name: string,
+                players: string[],
             },
-        }
+        },
+        server: {
+            port: number,
+        },
     }
 }
 

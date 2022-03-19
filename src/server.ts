@@ -11,6 +11,8 @@ const io = new Server(server);
 app.use(express.static(path.join(__dirname, '../src/html/server')));
 
 const configPath = path.join(__dirname, '../src/config.json');
+const gosuPath = path.join(__dirname, '../src/temp-gosujson.json');
+fs.writeFileSync(gosuPath, '', { encoding: 'utf-8' });
 
 const port = getConfig().server.port;
 server.listen(port, () => {
@@ -42,13 +44,22 @@ io.on('connection', socket => {
         saveConfig(configData);
         socket.emit('save config');
     });
+
+    socket.on('gosu', (data: Gosu) => {
+        const str = `\n${JSON.stringify(data, null, 4)}\n`;
+        fs.appendFile(gosuPath, str, { encoding: 'utf-8' }, err => {
+            if (err) {
+                console.error(err);
+            }
+        });
+    });
 });
 
-export function saveConfig(configData: Configuration.Standard) {
+export function saveConfig(configData: Config) {
     fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
 }
 
-export function getConfig(): Configuration.Standard {
+export function getConfig(): Config {
     const rawConfig = fs.readFileSync(configPath, { encoding: 'utf-8' });
     return JSON.parse(rawConfig);
 }

@@ -402,7 +402,7 @@ html {
     z-index: -10;
 }
 
-#matchScreenBottomWrapperContainer {
+/* #matchScreenBottomWrapperContainer {
     width: 100%;
     height: 100%;
     display: flex;
@@ -411,6 +411,15 @@ html {
 
 #matchScreenBottomWrapperContainer>div {
     width: 50%;
+} */
+
+#matchScreenTeamScoreContainer {
+    display: flex;
+    flex-flow: row;
+}
+
+#matchScreenTeamScoreContainer>div {
+    flex: 0 0 50%;
 }
 
 #matchScreenBottomRightContainer {
@@ -423,10 +432,15 @@ html {
 }
 
 #matchScreenMapContainer {
-    border: #5e5e5e solid 6px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 50%;
+    height: 50%;
+    /* border: #5e5e5e solid 6px;
     display: flow-root;
     box-sizing: border-box;
-    padding: 0 5px 0 5px;
+    padding: 0 5px 0 5px; */
 }
 
 #matchScreenMapInfoContainer {
@@ -441,7 +455,7 @@ html {
 #matchScreenMapBgContainer {
     position: absolute;
     z-index: -1;
-    align-self: flex-start;
+    /* align-self: flex-start; */
 }
 
 #matchScreenMapBg {
@@ -451,6 +465,9 @@ html {
     /* border-radius: 10px;  */
     /* https://stackoverflow.com/questions/25092391/how-to-dim-an-image-keeping-transparency-untouched-with-css-or-js */
     filter: brightness(50%);
+    display: flow-root;
+    box-sizing: border-box;
+    border: #5e5e5e solid 6px;
 }
 
 #matchScreenMapMetadataContainer {
@@ -527,7 +544,6 @@ html {
     overflow: hidden;
 }
 
-
 .matchScreenChatMessageContainer {
     display: flex;
     flex-flow: row;
@@ -547,6 +563,18 @@ html {
 
 .matchScreenChatMessageBody, .matchScreenChatMessageTime {
     font-family: Torus Regular, Helvetica, sans-serif;
+}
+
+.matchScreenChatTeambot, .matchScreenChatTeamunknown {
+    color: #9ECE9A;
+}
+
+.matchScreenChatTeamleft {
+    color: #A91418;
+}
+
+.matchScreenChatTeamright {
+    color: #1461A5;
 }
 
 /* winner screen */
