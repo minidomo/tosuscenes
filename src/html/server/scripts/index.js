@@ -223,7 +223,7 @@ function initSocket() {
     return socket;
 }
 
-function initGosuSocket(server) {
+function initGosuSocket() {
     const gosuSocket = new ReconnectingWebSocket('ws://127.0.0.1:24050/ws');
 
     gosuSocket.addEventListener('open', () => {
@@ -265,13 +265,15 @@ function initGosuSocket(server) {
         red: {
             value: 0,
             animation: new CountUp('matchScreenRedScoreValue', 0, {
-                duration: 0.108, // Seconds
+                // Seconds
+                duration: 0.108,
             }),
         },
         blue: {
             value: 0,
             animation: new CountUp('matchScreenBlueScoreValue', 0, {
-                duration: 0.108, // Seconds
+                // Seconds
+                duration: 0.108,
             }),
         },
     };
@@ -320,37 +322,26 @@ function initGosuSocket(server) {
         }
     }
 
-    // TODO remove
-    const tempTime = {
-        sVal: -1,
-        eVal: -1,
-        min: 2039420,
-        max: -1,
-        sum: 0,
-        count: 0,
-        start() {
-            this.sVal = performance.now();
-        },
-        end() {
-            this.eVal = performance.now();
-            const timeDiff = this.eVal - this.sVal;
-
-            this.count++;
-            this.sum += timeDiff;
-            this.min = Math.min(this.min, timeDiff);
-            this.max = Math.max(this.max, timeDiff);
-            const average = this.sum / this.count;
-            console.log(`${timeDiff.toFixed(3)} ms | ${this.min.toFixed(3)} ${this.max.toFixed(3)} ${average.toFixed(3)}`);
-        },
-    };
+    /**
+     *
+     * @param {Object[]} clients
+     * @returns {number}
+     */
+    function getUniformMods(clients) {
+        let mods;
+        clients.forEach(client => {
+            const curMods = client.gameplay.mods.num;
+            if (mods === undefined) {
+                mods = curMods;
+            } else {
+                mods &= curMods;
+            }
+        });
+        return mods;
+    }
 
     gosuSocket.addEventListener('message', event => {
-        // If (tempTime.sVal !== -1) {
-        //     tempTime.end();
-        // }
-        // tempTime.start();
         const data = JSON.parse(event.data);
-        // Server.emit('gosu', data);
 
         // TODO menu always here?
         const menu = data.menu;
@@ -365,40 +356,64 @@ function initGosuSocket(server) {
             trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
             trySetInnerHtml(matchMapDifficultyName, bm.metadata.difficulty);
 
-            trySetInnerHtml(matchMapCsValue, getStatString(bm.stats.CS, 1));
-            trySetInnerHtml(matchMapArValue, getStatString(bm.stats.AR, 1));
-            trySetInnerHtml(matchMapOdValue, getStatString(bm.stats.OD, 1));
-
-            const bpmAverage = (bm.stats.BPM.min + bm.stats.BPM.max) / 2;
-            trySetInnerHtml(matchMapBpmValue, getStatString(bpmAverage, 1));
-
             /** @type {number} */
             let timeDuration;
+            let bpmAverage = (bm.stats.BPM.min + bm.stats.BPM.max) / 2;
+            let csChange = false;
+            let arChange = false;
+            let odChange = false;
 
-            const clients = tourney.ipcClients;
+            const clients = tourney.ipcClients
+                ? tourney.ipcClients.filter(client => client.team === 'left' || client.team === 'right')
+                : undefined;
             const isTourney = typeof tourney !== 'undefined';
             const clientsExists = typeof clients !== 'undefined' && clients.length > 0;
 
             if (isTourney && clientsExists) {
                 // Get any team to check if dt/ht is on
-                const team = clients[0];
-                const modsNum = team.gameplay.mods.num;
+                let modsNum = getUniformMods(clients);
                 const isDt = (modsNum & 64) === 64;
                 const isHT = (modsNum & 256) === 256;
+                const isHr = (modsNum & 16) === 16;
+                const isEz = (modsNum & 2) === 2;
                 if (isDt) {
                     timeDuration = Math.round(bm.time.mp3 / 1.5);
+                    bpmAverage /= 1.5;
+                    arChange = odChange = true;
                 } else if (isHT) {
                     timeDuration = Math.round(bm.time.mp3 * 1.5);
+                    bpmAverage *= 1.5;
+                    arChange = odChange = true;
                 } else {
                     timeDuration = bm.time.mp3;
+                }
+
+                if (isHr || isEz) {
+                    csChange = arChange = odChange = true;
                 }
             } else {
                 timeDuration = bm.time.mp3;
             }
             trySetInnerHtml(matchMapLengthValue, dayjs.duration(timeDuration).format('mm:ss'));
+            trySetInnerHtml(matchMapBpmValue, getStatString(bpmAverage, 1));
 
+            let csStr = getStatString(bm.stats.memoryCS, 1);
+            let arStr = getStatString(bm.stats.memoryAR, 1);
+            let odStr = getStatString(bm.stats.memoryOD, 1);
+            if (csChange) {
+                csStr += '*';
+            }
+            if (arChange) {
+                arStr += '*';
+            }
+            if (odChange) {
+                odStr += '*';
+            }
+            trySetInnerHtml(matchMapCsValue, csStr);
+            trySetInnerHtml(matchMapArValue, arStr);
+            trySetInnerHtml(matchMapOdValue, odStr);
 
-            let sr = `${bm.stats.fullSR}*`;
+            const sr = `${bm.stats.fullSR}*`;
             trySetInnerHtml(matchMapSrValue, sr);
 
             if (prevBgPath !== bm.path.full) {
@@ -431,9 +446,10 @@ function initGosuSocket(server) {
                 }
             }
 
-            const chatExists = typeof manager.chat !== 'undefined';
+            const chatExists = !!manager.chat;
 
             if (manager.bools.scoreVisible) {
+                const clients = tourney.ipcClients.filter(client => client.team === 'left' || client.team === 'right');
                 const redScore = clients
                     .filter(client => client.team === 'left')
                     .map(client => client.gameplay.score)
@@ -592,6 +608,7 @@ function loadScreenData(screenName) {
 
     initTsParticles();
     const socket = initSocket();
-    const gosuSocket = initGosuSocket(socket);
+    initGosuSocket();
+
     socket.emit('load config');
 })();

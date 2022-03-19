@@ -416,6 +416,7 @@ html {
 #matchScreenTeamScoreContainer {
     display: flex;
     flex-flow: row;
+    height: 50%;
 }
 
 #matchScreenTeamScoreContainer>div {
@@ -517,7 +518,6 @@ html {
 
 #matchScreenRedScoreContainer {
     flex-flow: row-reverse;
-    height: 50%;
 }
 
 #matchScreenBlueScoreValue {
