@@ -201,11 +201,9 @@ function initSocket() {
                     if (!isWonPoint) {
                         e.addClass('matchScreenPointWon');
                     }
-                } else {
-                    if (isWonPoint) {
+                } else if (isWonPoint) {
                         e.removeClass('matchScreenPointWon');
                     }
-                }
             });
     });
 
