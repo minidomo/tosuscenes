@@ -216,6 +216,25 @@ function initSocket() {
         }
     });
 
+    socket.on('score multiplier change', state => {
+        //    /** @type {string} */
+        //    let pointContainerQuery;
+        //    switch (state.team) {
+        //        case 'red': {
+        //            pointContainerQuery = '#matchScreenRedPointsContainer';
+        //            break;
+        //        }
+        //        case 'blue': {
+        //            pointContainerQuery = '#matchScreenBluePointsContainer';
+        //            break;
+        //        }
+        //        default: {
+        //            console.error(`unknown teamColor: ${changeState.teamColor}`);
+        //            return;
+        //        }
+        //    }
+    });
+
     return socket;
 }
 
@@ -336,6 +355,18 @@ function initGosuSocket() {
         return mods;
     }
 
+    /**
+     *
+     * @param {Object[]} clients
+     * @returns {Object[]}
+     */
+    function filterClients(clients) {
+        return clients.filter(client => {
+            if (client.team !== 'left' && client.team !== 'right') return false;
+            return client.spectating.userID !== 0;
+        });
+    }
+
     gosuSocket.addEventListener('message', event => {
         const data = JSON.parse(event.data);
 
@@ -359,9 +390,7 @@ function initGosuSocket() {
             let arChange = false;
             let odChange = false;
 
-            const clients = tourney.ipcClients
-                ? tourney.ipcClients.filter(client => client.team === 'left' || client.team === 'right')
-                : undefined;
+            const clients = tourney.ipcClients ? filterClients(tourney.ipcClientsl) : undefined;
             const isTourney = typeof tourney !== 'undefined';
             const clientsExists = typeof clients !== 'undefined' && clients.length > 0;
 
@@ -439,21 +468,25 @@ function initGosuSocket() {
                     tryFadeOut('#matchScreenRedScoreContainer');
                     tryFadeOut('#matchScreenBlueScoreContainer');
                     tryFadeIn('#matchScreenChatContainer');
+                    score.red.animation.update(0);
+                    score.blue.animation.update(0);
+                    score.red.value = 0;
+                    score.blue.value = 0;
                 }
             }
 
             const chatExists = !!manager.chat;
 
             if (manager.bools.scoreVisible) {
-                const clients = tourney.ipcClients.filter(client => client.team === 'left' || client.team === 'right');
+                const clients = filterClients(tourney.ipcClients);
                 const redScore = clients
                     .filter(client => client.team === 'left')
                     .map(client => client.gameplay.score)
-                    .reduce((prev, cur) => prev + cur);
+                    .reduce((prev, cur) => prev + cur, 0);
                 const blueScore = clients
                     .filter(client => client.team === 'right')
                     .map(client => client.gameplay.score)
-                    .reduce((prev, cur) => prev + cur);
+                    .reduce((prev, cur) => prev + cur, 0);
 
                 if (score.red.value !== redScore) {
                     score.red.animation.update(redScore);
@@ -465,14 +498,18 @@ function initGosuSocket() {
                     score.blue.value = blueScore;
                 }
 
-                if (redScore > blueScore && prevScoreLead !== 'red') {
-                    matchBlueScoreValue.classList.remove('matchScreenScoreLeading');
-                    matchRedScoreValue.classList.add('matchScreenScoreLeading');
-                    prevScoreLead = 'red';
-                } else if (redScore < blueScore && prevScoreLead !== 'blue') {
-                    matchRedScoreValue.classList.remove('matchScreenScoreLeading');
-                    matchBlueScoreValue.classList.add('matchScreenScoreLeading');
-                    prevScoreLead = 'blue';
+                if (redScore > blueScore) {
+                    if (prevScoreLead !== 'red') {
+                        matchBlueScoreValue.classList.remove('matchScreenScoreLeading');
+                        matchRedScoreValue.classList.add('matchScreenScoreLeading');
+                        prevScoreLead = 'red';
+                    }
+                } else if (redScore < blueScore) {
+                    if (prevScoreLead !== 'blue') {
+                        matchRedScoreValue.classList.remove('matchScreenScoreLeading');
+                        matchBlueScoreValue.classList.add('matchScreenScoreLeading');
+                        prevScoreLead = 'blue';
+                    }
                 } else if (prevScoreLead !== 'tie') {
                     matchRedScoreValue.classList.remove('matchScreenScoreLeading');
                     matchBlueScoreValue.classList.remove('matchScreenScoreLeading');

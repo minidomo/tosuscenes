@@ -36,6 +36,9 @@ function initPointButtonEvents() {
     const redPointElement = document.getElementById('redPointValue') as HTMLDivElement;
     const bluePointElement = document.getElementById('bluePointValue') as HTMLDivElement;
 
+    redPointElement.innerHTML = `${config.tournament.teams.red.points}`;
+    bluePointElement.innerHTML = `${config.tournament.teams.blue.points}`;
+
     document.getElementById('redPointIncrementButton')
         ?.addEventListener('click', () => {
             if (config.tournament.teams.red.points < config.tournament.individualMaxPoints) {
@@ -90,13 +93,14 @@ function initPointButtonEvents() {
 }
 
 function initAnnotationButtonEvents() {
+    const annotationInput = document.getElementById('annotationInput') as HTMLInputElement;
+
+    annotationInput.value = `${config.tournament.annotation}`;
+
     document.getElementById('annotationUpdateButton')
         ?.addEventListener('click', () => {
-            const e = document.getElementById('annotationInput');
-            if (e === null) return;
-            const inputAnnotation = (e as HTMLInputElement).value;
-            if (typeof inputAnnotation === 'string' && inputAnnotation !== config.tournament.annotation) {
-                config.tournament.annotation = inputAnnotation;
+            if (annotationInput.value !== config.tournament.annotation) {
+                config.tournament.annotation = annotationInput.value;
                 getIO().emit('annotation change', config.tournament.annotation);
             }
         });
@@ -121,10 +125,47 @@ function initDetermineWinnerButtonEvents() {
         });
 }
 
+function initScoreMultiplierButtonEvents() {
+    const numberFormatRegex = /(^\d+(\.\d+)?$)|(^(\d+)?\.\d+$)/;
+
+    const redScoreMultiplierInput = document.getElementById('redScoreMultiplierInput') as HTMLInputElement;
+    const blueScoreMultiplierInput = document.getElementById('blueScoreMultiplierInput') as HTMLInputElement;
+
+    redScoreMultiplierInput.value = `${config.tournament.teams.red.scoreMultiplier}`;
+    blueScoreMultiplierInput.value = `${config.tournament.teams.blue.scoreMultiplier}`;
+
+    document.getElementById('redScoreMultiplierUpdateButton')
+        ?.addEventListener('click', () => {
+            const match = redScoreMultiplierInput.value.match(numberFormatRegex);
+            if (match) {
+                const num = parseFloat(redScoreMultiplierInput.value);
+                const state = {
+                    team: 'red',
+                    value: num,
+                };
+                getIO().emit('score multiplier change', state);
+            }
+        });
+
+    document.getElementById('blueScoreMultiplierUpdateButton')
+        ?.addEventListener('click', () => {
+            const match = blueScoreMultiplierInput.value.match(numberFormatRegex);
+            if (match) {
+                const num = parseFloat(blueScoreMultiplierInput.value);
+                const state = {
+                    team: 'blue',
+                    value: num,
+                };
+                getIO().emit('score multiplier change', state);
+            }
+        });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     initSceneButtonEvents();
     initConfigButtonEvents();
     initPointButtonEvents();
     initAnnotationButtonEvents();
     initDetermineWinnerButtonEvents();
+    initScoreMultiplierButtonEvents();
 });

@@ -1,5 +1,6 @@
 declare global {
     interface ConfigTeam {
+        scoreMultiplier: number,
         points: number,
         image: string,
         name: string,
