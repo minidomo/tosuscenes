@@ -78,8 +78,43 @@ function initPointButtonEvents() {
         });
 }
 
+function initAnnotationButtonEvents() {
+    document.getElementById('annotationUpdateButton')
+        ?.addEventListener('click', () => {
+            const e = document.getElementById('annotationInput');
+            if (e === null) return;
+            const inputAnnotation = (e as HTMLInputElement).value;
+            console.log(inputAnnotation);
+            if (typeof inputAnnotation === 'string' && inputAnnotation !== config.tournament.annotation) {
+                config.tournament.annotation = inputAnnotation;
+                getIO().emit('annotation change', config.tournament.annotation);
+            }
+        });
+}
+
+function initDetermineWinnerButtonEvents() {
+    document.getElementById('determineWinnerButton')
+        ?.addEventListener('click', () => {
+            const teams = config.tournament.teams;
+            const winner = config.tournament.winner;
+            if (teams.red.points > teams.blue.points) {
+                winner.color = 'RED';
+                winner.image = teams.red.image;
+                winner.name = teams.red.name;
+                winner.players = teams.red.players;
+            } else if (teams.red.points < teams.blue.points) {
+                winner.color = 'BLUE';
+                winner.image = teams.blue.image;
+                winner.name = teams.blue.name;
+                winner.players = teams.blue.players;
+            }
+        });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
     initSceneButtonEvents();
     initConfigButtonEvents();
     initPointButtonEvents();
+    initAnnotationButtonEvents();
+    initDetermineWinnerButtonEvents();
 });

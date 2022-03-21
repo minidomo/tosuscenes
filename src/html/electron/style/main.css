@@ -12,22 +12,63 @@ html {
 
 #screenControlContainer {
     display: flex;
-    flex-flow: row;
+    flex-flow: column;
 }
 
-#configButtonContainer {
+#screenControlInteractionContainer {
     display: flex;
     flex-flow: row;
 }
 
-#pointManagerContainer {
+#configContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+#configInteractionContainer {
+    display: flex;
+    flex-flow: row;
+}
+
+#teamManagerContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+.teamSettingsWrapper {
+    display: flow-root;
+    box-sizing: border-box;
+    padding: 0 0 0 10px;
+}
+
+.teamSettingsContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+.generalTeamManagerContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+}
+
+.pointManagerContainer {
     display: flex;
     flex-flow: row;
     gap: 10px;
 }
 
-.pointContainer {
+#annotationManagerContainer {
     display: flex;
     flex-flow: column;
-    width: max-content;
+}
+
+#annotationInteractionContainer {
+    display: flex;
+    flex-flow: row;
+}
+
+#determineWinnerManagerContainer {
+    display: flex;
+    flex-flow: row;
 }

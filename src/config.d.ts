@@ -13,6 +13,7 @@ declare global {
             bracket: string,
             round: string,
             individualMaxPoints: number,
+            annotation: string,
             teams: {
                 red: ConfigTeam,
                 blue: ConfigTeam,

@@ -385,6 +385,13 @@ html {
     border-radius: 4px;
 }
 
+#matchScreenAnnotationContainer {
+    font-size: 24px;
+    background-color: violet;
+    padding: 0 6px 0 6px;
+    border-radius: 4px;
+}
+
 /* match screen bottom container */
 
 #matchScreenBottomContainer {

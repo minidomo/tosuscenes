@@ -94,6 +94,12 @@ function initSocket() {
         document.getElementById('matchScreenBlueImage').setAttribute('src', config.tournament.teams.blue.image);
         document.getElementById('matchScreenBlueTeamName').innerHTML = config.tournament.teams.blue.name;
 
+        document.getElementById('matchScreenAnnotationText').innerHTML = config.tournament.annotation;
+        if (config.tournament.annotation.length === 0) {
+            document.getElementById('matchScreenAnnotationContainer')
+                .setAttribute('style', 'display: none');
+        }
+
         pointsContainer = document.getElementById('matchScreenRedPointsContainer');
         $(pointsContainer).empty();
         for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
@@ -217,6 +223,15 @@ function initSocket() {
             children.first().addClass('matchScreenPointWon');
         } else {
             children.last().removeClass('matchScreenPointWon');
+        }
+    });
+
+    socket.on('annotation change', annotation => {
+        document.getElementById('matchScreenAnnotationText').innerHTML = annotation;
+        if (annotation.length === 0) {
+            tryFadeOut('matchScreenAnnotationContainer');
+        } else {
+            tryFadeIn('matchScreenAnnotationContainer');
         }
     });
 

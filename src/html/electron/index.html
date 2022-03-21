@@ -12,36 +12,104 @@
 
 <body>
     <div id="controlsContainer">
+
+
         <div id="screenControlContainer">
-            <div id="defaultScreenButtonContainer">
-                <button id="defaultScreenButton">Default</button>
+            <div id="screenControlTextContainer">
+                <div id="screenControlText">Screen Controller</div>
             </div>
-            <div id="lineUpScreenButtonContainer">
-                <button id="lineUpScreenButton">Line Up</button>
-            </div>
-            <div id="mapScreenButtonContainer">
-                <button id="mapScreenButton">Maps</button>
-            </div>
-            <div id="matchScreenButtonContainer">
-                <button id="matchScreenButton">Match</button>
-            </div>
-            <div id="winnerScreenButtonContainer">
-                <button id="winnerScreenButton">Winner</button>
-            </div>
-        </div>
-        <div id="configButtonContainer">
-            <div id="sendButtonContainer">
-                <button id="sendButton">Send</button>
-            </div>
-            <div id="saveButtonContainer">
-                <button id="saveButton">Save</button>
+            <div id="screenControlInteractionContainer">
+                <div id="defaultScreenButtonContainer">
+                    <button id="defaultScreenButton">Default</button>
+                </div>
+                <div id="lineUpScreenButtonContainer">
+                    <button id="lineUpScreenButton">Line Up</button>
+                </div>
+                <div id="mapScreenButtonContainer">
+                    <button id="mapScreenButton">Maps</button>
+                </div>
+                <div id="matchScreenButtonContainer">
+                    <button id="matchScreenButton">Match</button>
+                </div>
+                <div id="winnerScreenButtonContainer">
+                    <button id="winnerScreenButton">Winner</button>
+                </div>
             </div>
         </div>
 
-        <div id="pointManagerContainer">
+        <div id="configContainer">
+            <div id="configTextContainer">
+                <div id="configText">Config Settings (config.json)</div>
+            </div>
+            <div id="configInteractionContainer">
+                <div id="sendButtonContainer">
+                    <button id="sendButton">Send</button>
+                </div>
+                <div id="saveButtonContainer">
+                    <button id="saveButton">Save</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="teamManagerContainer">
+            <div id="teamManagerTextContainer">
+                <div id="teamManagerText">Team Manager</div>
+            </div>
+
+            <div class="generalTeamManagerContainer">
+                <div class="teamTextContainer">
+                    <div class="teamText">Red</div>
+                </div>
+                <div class="teamSettingsWrapper">
+                    <div class="teamSettingsContainer">
+                        <div class="pointManagerContainer">
+                            <div class="pointTextContainer">
+                                <div class="pointText">Points</div>
+                            </div>
+                            <div class="pointValueContainer">
+                                <div id="redPointValue">0</div>
+                            </div>
+                            <div class="pointIncrementButtonContainer">
+                                <button id="redPointIncrementButton">&#8593;</button>
+                            </div>
+                            <div class="pointDecrementButtonContainer">
+                                <button id="redPointDecrementButton">&#8595;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="generalTeamManagerContainer">
+                <div class="teamTextContainer">
+                    <div class="teamText">Blue</div>
+                </div>
+                <div class="teamSettingsWrapper">
+                    <div class="teamSettingsContainer">
+                        <div class="pointManagerContainer">
+                            <div class="pointTextContainer">
+                                <div class="pointText">Points</div>
+                            </div>
+                            <div class="pointTextContainer">
+                                <div id="bleuPointText">0</div>
+                            </div>
+                            <div class="pointIncrementButtonContainer">
+                                <button id="bluePointIncrementButton">&#8593;</button>
+                            </div>
+                            <div class="pointDecrementButtonContainer">
+                                <button id="bluePointDecrementButton">&#8595;</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- <div id="pointManagerContainer">
             <div id="redPointContainer" class="pointContainer">
                 <div id="redPointTextContainer">
-                    <span id="redPointText">Red Points</span>
+                    <div id="redPointText">Red Points</div>
                 </div>
                 <div id="redPointIncrementButtonContainer">
                     <button id="redPointIncrementButton">&#8593;</button>
@@ -52,7 +120,7 @@
             </div>
             <div id="bluePointContainer" class="pointContainer">
                 <div id="bluePointTextContainer">
-                    <span id="bluePointText">Blue Points</span>
+                    <div id="bluePointText">Blue Points</div>
                 </div>
                 <div id="bluePointIncrementButtonContainer">
                     <button id="bluePointIncrementButton">&#8593;</button>
@@ -61,7 +129,28 @@
                     <button id="bluePointDecrementButton">&#8595;</button>
                 </div>
             </div>
+        </div> -->
+
+        <div id="annotationManagerContainer">
+            <div id="annotationTextContainer">
+                <div id="annotationText">Match Annotation</div>
+            </div>
+            <div id="annotationInteractionContainer">
+                <div id="annotationInputContainer">
+                    <input type="text" id="annotationInput">
+                </div>
+                <div id="annotationUpdateButtonContainer">
+                    <button id="annotationUpdateButton">Update</button>
+                </div>
+            </div>
         </div>
+
+        <div id="determineWinnerManagerContainer">
+            <div id="determineWinnerButtonContainer">
+                <button id="determineWinnerButton">Determine Winner</button>
+            </div>
+        </div>
+
     </div>
 </body>
 
