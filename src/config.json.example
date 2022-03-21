@@ -1,0 +1,57 @@
+{
+    "tournament": {
+        "title": "Yeehaw Cup 3",
+        "subtitle": "Spring 2022",
+        "bracket": "Winners",
+        "round": "RO16",
+        "individualMaxPoints": 5,
+        "annotation": "",
+        "referees": [],
+        "teams": {
+            "red": {
+                "points": 0,
+                "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
+                "name": "the NATION",
+                "players": [
+                    "minidomo",
+                    "BTC",
+                    "BTMC",
+                    "WFGHJFGHJFGHJ",
+                    "sdf",
+                    "BTMC",
+                    "asd",
+                    "BTMC",
+                    "BTMC"
+                ]
+            },
+            "blue": {
+                "points": 0,
+                "image": "https://a.ppy.sh/8030129?1611079612.jpeg",
+                "name": "keqing",
+                "players": [
+                    "fieryrage",
+                    "MBmasher"
+                ]
+            }
+        },
+        "winner": {
+            "color": "RED",
+            "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
+            "name": "the NATION",
+            "players": [
+                "minidomo",
+                "BTMC",
+                "BTMC",
+                "WFGHJFGHJFGHJ",
+                "sdf",
+                "BTMC",
+                "asd",
+                "BTMC",
+                "BTMC"
+            ]
+        }
+    },
+    "server": {
+        "port": 50423
+    }
+}
