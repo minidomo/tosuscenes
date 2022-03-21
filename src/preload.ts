@@ -33,6 +33,9 @@ function initConfigButtonEvents() {
 }
 
 function initPointButtonEvents() {
+    const redPointElement = document.getElementById('redPointValue') as HTMLDivElement;
+    const bluePointElement = document.getElementById('bluePointValue') as HTMLDivElement;
+
     document.getElementById('redPointIncrementButton')
         ?.addEventListener('click', () => {
             if (config.tournament.teams.red.points < config.tournament.individualMaxPoints) {
@@ -40,18 +43,22 @@ function initPointButtonEvents() {
             }
             const changeState = {
                 teamColor: 'red',
-                changeType: 'increment',
+                value: config.tournament.teams.red.points,
             };
+            redPointElement.innerHTML = `${config.tournament.teams.red.points}`;
             getIO().emit('point change', changeState);
         });
 
     document.getElementById('redPointDecrementButton')
         ?.addEventListener('click', () => {
-            if (config.tournament.teams.red.points > 0) config.tournament.teams.red.points--;
+            if (config.tournament.teams.red.points > 0) {
+                config.tournament.teams.red.points--;
+            }
             const changeState = {
                 teamColor: 'red',
-                changeType: 'decrement',
+                value: config.tournament.teams.red.points,
             };
+            redPointElement.innerHTML = `${config.tournament.teams.red.points}`;
             getIO().emit('point change', changeState);
         });
 
@@ -62,18 +69,22 @@ function initPointButtonEvents() {
             }
             const changeState = {
                 teamColor: 'blue',
-                changeType: 'increment',
+                value: config.tournament.teams.blue.points,
             };
+            bluePointElement.innerHTML = `${config.tournament.teams.blue.points}`;
             getIO().emit('point change', changeState);
         });
 
     document.getElementById('bluePointDecrementButton')
         ?.addEventListener('click', () => {
-            if (config.tournament.teams.blue.points > 0) config.tournament.teams.blue.points--;
+            if (config.tournament.teams.blue.points > 0) {
+                config.tournament.teams.blue.points--;
+            }
             const changeState = {
                 teamColor: 'blue',
-                changeType: 'decrement',
+                value: config.tournament.teams.blue.points,
             };
+            bluePointElement.innerHTML = `${config.tournament.teams.blue.points}`;
             getIO().emit('point change', changeState);
         });
 }

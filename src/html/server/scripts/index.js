@@ -192,38 +192,21 @@ function initSocket() {
             }
         }
 
-        /** @type {boolean} */
-        let increment;
-        switch (changeState.changeType) {
-            case 'increment': {
-                increment = true;
-                break;
-            }
-            case 'decrement': {
-                increment = false;
-                break;
-            }
-            default: {
-                console.error(`unknown changeType: ${changeState.changeType}`);
-                return;
-            }
-        }
-
-        const children = $(pointContainerQuery)
+        $(pointContainerQuery)
             .children()
-            .filter((index, element) => {
-                if (increment) {
-                    return $(element).attr('class') === 'matchScreenPoint';
+            .each((index, element) => {
+                const e = $(element);
+                const isWonPoint = e.hasClass('matchScreenPointWon');
+                if (index < changeState.value) {
+                    if (!isWonPoint) {
+                        e.addClass('matchScreenPointWon');
+                    }
                 } else {
-                    return $(element).attr('class') === 'matchScreenPoint matchScreenPointWon';
+                    if (isWonPoint) {
+                        e.removeClass('matchScreenPointWon');
+                    }
                 }
             });
-
-        if (increment) {
-            children.first().addClass('matchScreenPointWon');
-        } else {
-            children.last().removeClass('matchScreenPointWon');
-        }
     });
 
     socket.on('annotation change', annotation => {
