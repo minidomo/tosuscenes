@@ -95,7 +95,6 @@ function initAnnotationButtonEvents() {
             const e = document.getElementById('annotationInput');
             if (e === null) return;
             const inputAnnotation = (e as HTMLInputElement).value;
-            console.log(inputAnnotation);
             if (typeof inputAnnotation === 'string' && inputAnnotation !== config.tournament.annotation) {
                 config.tournament.annotation = inputAnnotation;
                 getIO().emit('annotation change', config.tournament.annotation);

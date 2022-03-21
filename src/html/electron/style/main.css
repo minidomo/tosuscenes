@@ -52,7 +52,7 @@ html {
     gap: 5px;
 }
 
-.pointManagerContainer {
+.pointManagerContainer, .scoreMultiplierContainer {
     display: flex;
     flex-flow: row;
     gap: 10px;

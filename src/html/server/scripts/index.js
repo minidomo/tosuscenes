@@ -97,7 +97,7 @@ function initSocket() {
         document.getElementById('matchScreenAnnotationText').innerHTML = config.tournament.annotation;
         if (config.tournament.annotation.length === 0) {
             document.getElementById('matchScreenAnnotationContainer')
-                .setAttribute('style', 'display: none');
+                .setAttribute('style', 'display: none;');
         }
 
         pointsContainer = document.getElementById('matchScreenRedPointsContainer');
@@ -202,17 +202,17 @@ function initSocket() {
                         e.addClass('matchScreenPointWon');
                     }
                 } else if (isWonPoint) {
-                        e.removeClass('matchScreenPointWon');
-                    }
+                    e.removeClass('matchScreenPointWon');
+                }
             });
     });
 
     socket.on('annotation change', annotation => {
         document.getElementById('matchScreenAnnotationText').innerHTML = annotation;
         if (annotation.length === 0) {
-            tryFadeOut('matchScreenAnnotationContainer');
+            tryFadeOut('#matchScreenAnnotationContainer');
         } else {
-            tryFadeIn('matchScreenAnnotationContainer');
+            tryFadeIn('#matchScreenAnnotationContainer');
         }
     });
 
