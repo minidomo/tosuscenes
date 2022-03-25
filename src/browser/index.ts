@@ -74,8 +74,8 @@ function initSocket() {
         $('#matchScreenRedImage').attr('src', config.tournament.teams.red.image);
         $('#matchScreenRedTeamName').html(config.tournament.teams.red.name);
 
-        $('#matchScreenRedImage').attr('src', config.tournament.teams.blue.image);
-        $('#matchScreenRedTeamName').html(config.tournament.teams.blue.name);
+        $('#matchScreenBlueImage').attr('src', config.tournament.teams.blue.image);
+        $('#matchScreenBlueTeamName').html(config.tournament.teams.blue.name);
 
         $('#matchScreenRedScoreMultiplierValue').html(`(x${config.tournament.teams.red.scoreMultiplier})`);
         $('#matchScreenBlueScoreMultiplierValue').html(`(x${config.tournament.teams.blue.scoreMultiplier})`);
