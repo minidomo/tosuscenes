@@ -19,16 +19,18 @@
         "strict": true,
         "useUnknownInCatchVariables": true,
         "declaration": true,
-        "importHelpers": false,
+        // "importHelpers": false,
+        "importHelpers": true,
         "importsNotUsedAsValues": "error",
         "inlineSources": true,
         "newLine": "lf",
-        "noEmitHelpers": true,
+        // "noEmitHelpers": true,
         "preserveConstEnums": true,
         "removeComments": false,
         "forceConsistentCasingInFileNames": true,
         "emitDecoratorMetadata": true,
         "experimentalDecorators": true,
+        "target": "ES2015",
         "paths": {
             "*": [
                 "node_modules/*"
@@ -37,8 +39,5 @@
     },
     "include": [
         "src/**/*",
-    ],
-    "exclude": [
-        "src/html"
     ]
 }

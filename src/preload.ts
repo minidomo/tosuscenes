@@ -1,6 +1,6 @@
 import { getIO, getConfig, saveConfig } from './server';
 
-const config = getConfig();
+let config = getConfig();
 
 function initSceneButtonEvents() {
     const sceneRegex = /^(.+)Button/;
@@ -24,6 +24,7 @@ function initSceneButtonEvents() {
 function initConfigButtonEvents() {
     document.getElementById('sendButton')
         ?.addEventListener('click', () => {
+            config = getConfig();
             getIO().emit('load config', config);
         });
     document.getElementById('saveButton')
@@ -139,6 +140,8 @@ function initScoreMultiplierButtonEvents() {
             const match = redScoreMultiplierInput.value.match(numberFormatRegex);
             if (match) {
                 const num = parseFloat(redScoreMultiplierInput.value);
+                if (num === config.tournament.teams.red.scoreMultiplier) return;
+                config.tournament.teams.red.scoreMultiplier = num;
                 const state = {
                     team: 'red',
                     value: num,
@@ -152,6 +155,8 @@ function initScoreMultiplierButtonEvents() {
             const match = blueScoreMultiplierInput.value.match(numberFormatRegex);
             if (match) {
                 const num = parseFloat(blueScoreMultiplierInput.value);
+                if (num === config.tournament.teams.blue.scoreMultiplier) return;
+                config.tournament.teams.blue.scoreMultiplier = num;
                 const state = {
                     team: 'blue',
                     value: num,

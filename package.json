@@ -5,14 +5,15 @@
     "description": "Scenes for osu! tournaments.",
     "main": "dist/index.js",
     "scripts": {
-        "build": "tsc",
+        "build": "tsc && npm run browserify",
         "start": "npm run build && electron-forge start",
         "package": "electron-forge package",
         "make": "electron-forge make",
         "publish": "electron-forge publish",
-        "lint": "eslint src/ --ext .ts --ext .js",
-        "lint:fix": "eslint src/ --ext .ts --ext .js --fix",
-        "clean": "trash out/ dist/"
+        "lint": "eslint src/",
+        "lint:fix": "eslint src/ --fix",
+        "clean": "trash out/ dist/",
+        "browserify": "browserify dist/browser/index.js -o html/server/scripts/index.js"
     },
     "keywords": [],
     "author": {
@@ -53,18 +54,28 @@
         "@electron-forge/maker-rpm": "^6.0.0-beta.63",
         "@electron-forge/maker-squirrel": "^6.0.0-beta.63",
         "@electron-forge/maker-zip": "^6.0.0-beta.63",
+        "@types/express": "^4.17.13",
+        "@types/jquery": "^3.5.14",
         "@typescript-eslint/eslint-plugin": "^5.15.0",
         "@typescript-eslint/parser": "^5.15.0",
+        "browserify": "^17.0.0",
+        "countup.js": "^2.1.0",
+        "dayjs": "^1.11.0",
         "electron": "17.1.2",
         "eslint": "^8.11.0",
         "eslint-plugin-import": "^2.25.4",
+        "jquery": "^3.6.0",
+        "numbro": "^2.3.6",
+        "socket.io-client": "^4.4.1",
         "trash-cli": "^5.0.0",
-        "typescript": "~4.5.4"
+        "tsparticles": "^1.42.4",
+        "typescript": "~4.5.4",
+        "websocket-ts": "^1.1.1"
     },
     "dependencies": {
-        "@types/express": "^4.17.13",
         "electron-squirrel-startup": "^1.0.0",
         "express": "^4.17.3",
-        "socket.io": "^4.4.1"
+        "socket.io": "^4.4.1",
+        "tslib": "^2.3.1"
     }
 }

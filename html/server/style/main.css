@@ -365,7 +365,7 @@ html {
     display: flex;
     flex-flow: column nowrap;
     align-items: center;
-    gap: 10px;
+    gap: 8px;
 }
 
 #matchScreenMetadataContainer>div {
@@ -420,13 +420,13 @@ html {
     width: 50%;
 } */
 
-#matchScreenTeamScoreContainer {
+#matchScreenTeamStatsContainer {
     display: flex;
     flex-flow: row;
     height: 50%;
 }
 
-#matchScreenTeamScoreContainer>div {
+#matchScreenTeamStatsContainer>div {
     flex: 0 0 50%;
 }
 
@@ -513,30 +513,41 @@ html {
     height: 19px;
 }
 
-.matchScreenScoreContainer {
+.matchScreenStatsContainer {
     display: flex;
     align-items: center;
     font-size: 46px;
 }
 
-#matchScreenBlueScoreContainer {
+#matchScreenBlueStatsContainer {
     flex-flow: row;
 }
 
-#matchScreenRedScoreContainer {
+#matchScreenRedStatsContainer {
     flex-flow: row-reverse;
+}
+
+#matchScreenRedScoreContainer, #matchScreenBlueScoreContainer {
+    flex-basis: 300px;
 }
 
 #matchScreenBlueScoreValue {
     margin: 0 0 0 20px;
+    text-align: left;
 }
 
 #matchScreenRedScoreValue {
     margin: 0 20px 0 0;
+    text-align: right;
 }
 
 .matchScreenScoreLeading {
     font-size: 56px;
+}
+
+.matchScreenScoreMultiplierContainer {
+    font-size: 30px;
+    color: #9395D3;
 }
 
 #matchScreenChatContainer {

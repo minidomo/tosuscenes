@@ -8,22 +8,6 @@
     <title>Document</title>
 
     <link rel="stylesheet" href="style/main.css">
-
-    <script src="scripts/reconnecting-websocket-iife.min.js"></script>
-    <script type="module" src="scripts/countUp.min.js"></script>
-
-    <script src="https://cdn.socket.io/4.4.1/socket.io.min.js"
-        integrity="sha384-fKnu0iswBIqkjxrhQCTZ7qlLHOFEgNkRmK2vaO/LbTZSXdJfAu6ewRBdwHPhBo/H"
-        crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"
-        integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles@1/tsparticles.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tsparticles-preset-snow@1/tsparticles.preset.snow.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/numbro@2.3.6/dist/numbro.min.js"></script>
-
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/dayjs.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/dayjs@1.11.0/plugin/duration.js"></script>
-    <script>dayjs.extend(window.dayjs_plugin_duration)</script>
 </head>
 
 <body>
@@ -137,13 +121,26 @@
             <div id="matchScreenBottomContainer">
                 <div id="matchScreenBottomBg"></div>
 
-                <div id="matchScreenTeamScoreContainer">
-                    <div id="matchScreenRedScoreContainer" class="matchScreenScoreContainer">
-                        <div id="matchScreenRedScoreValue">0</div>
+                <div id="matchScreenTeamStatsContainer">
+
+                    <div id="matchScreenRedStatsContainer" class="matchScreenStatsContainer">
+                        <div id="matchScreenRedScoreContainer">
+                            <div id="matchScreenRedScoreValue">0</div>
+                        </div>
+                        <div id="matchScreenRedScoreMultiplierContainer" class="matchScreenScoreMultiplierContainer">
+                            <div id="matchScreenRedScoreMultiplierValue"></div>
+                        </div>
                     </div>
-                    <div id="matchScreenBlueScoreContainer" class="matchScreenScoreContainer">
-                        <div id="matchScreenBlueScoreValue">0</div>
+
+                    <div id="matchScreenBlueStatsContainer" class="matchScreenStatsContainer">
+                        <div id="matchScreenBlueScoreContainer">
+                            <div id="matchScreenBlueScoreValue">0</div>
+                        </div>
+                        <div id="matchScreenBlueScoreMultiplierContainer" class="matchScreenScoreMultiplierContainer">
+                            <div id="matchScreenBlueScoreMultiplierValue"></div>
+                        </div>
                     </div>
+
                 </div>
 
                 <div id="matchScreenChatContainer"></div>
@@ -152,7 +149,7 @@
                     <div id="matchScreenMapBgContainer">
                         <img id="matchScreenMapBg" src="" alt=" ">
                     </div>
-                    
+
                     <div id="matchScreenMapInfoContainer">
                         <div id="matchScreenMapMetadataContainer">
                             <div id="matchScreenMapTitle"></div>
@@ -234,7 +231,7 @@
             </div>
         </div>
     </div>
-    <script type="module" src="scripts/index.js"></script>
+    <script src="scripts/index.js"></script>
 </body>
 
 </html>

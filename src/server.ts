@@ -8,11 +8,11 @@ const app = express();
 const server = createServer(app);
 const io = new Server(server);
 
-app.use(express.static(path.join(__dirname, '../src/html/server')));
+app.use(express.static(path.join(__dirname, '../html/server')));
 
-const configPath = path.join(__dirname, '../src/config.json');
-const gosuPath = path.join(__dirname, '../src/temp-gosujson.json');
-fs.writeFileSync(gosuPath, '', { encoding: 'utf-8' });
+const configPath = path.join(__dirname, '../config.json');
+// Const gosuPath = path.join(__dirname, '../src/temp-gosujson.json');
+// fs.writeFileSync(gosuPath, '', { encoding: 'utf-8' });
 
 const port = getConfig().server.port;
 server.listen(port, () => {
@@ -45,14 +45,14 @@ io.on('connection', socket => {
         socket.emit('save config');
     });
 
-    socket.on('gosu', (data: Gosu) => {
-        const str = `\n${JSON.stringify(data, null, 4)}\n`;
-        fs.appendFile(gosuPath, str, { encoding: 'utf-8' }, err => {
-            if (err) {
-                console.error(err);
-            }
-        });
-    });
+    // Socket.on('gosu', (data: Gosu) => {
+    //     const str = `\n${JSON.stringify(data, null, 4)}\n`;
+    //     fs.appendFile(gosuPath, str, { encoding: 'utf-8' }, err => {
+    //         if (err) {
+    //             console.error(err);
+    //         }
+    //     });
+    // });
 });
 
 export function saveConfig(configData: Config) {

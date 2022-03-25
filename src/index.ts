@@ -14,7 +14,7 @@ const createWindow = (): void => {
         },
     });
 
-    mainWindow.loadFile(path.join(__dirname, '../src/html/electron/index.html'));
+    mainWindow.loadFile(path.join(__dirname, '../html/electron/index.html'));
     mainWindow.webContents.openDevTools();
 };
 
