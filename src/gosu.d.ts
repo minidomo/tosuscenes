@@ -41,6 +41,24 @@ declare global {
         }
     }
 
+    interface GosuMenu {
+        pp: {
+            100: number,
+            99: number,
+            98: number,
+            97: number,
+            96: number,
+            95: number,
+            strains: number[],
+        },
+    }
+
+    interface GosuTourney {
+        manager: {
+            chat: number[],
+        },
+    }
+
     interface Gosu {
         settings: {
             showInterface: boolean,
@@ -50,6 +68,8 @@ declare global {
                 songs: string,
             },
         },
+        menu: GosuMenu,
+        tourney: GosuTourney,
     }
 }
 

@@ -11,7 +11,7 @@ const io = new Server(server);
 app.use(express.static(path.join(__dirname, '../html/server')));
 
 const configPath = path.join(__dirname, '../config.json');
-// Const gosuPath = path.join(__dirname, '../src/temp-gosujson.json');
+// Const gosuPath = path.join(__dirname, '../src/temp-gosujson.txt');
 // fs.writeFileSync(gosuPath, '', { encoding: 'utf-8' });
 
 const port = getConfig().server.port;
@@ -46,6 +46,12 @@ io.on('connection', socket => {
     });
 
     // Socket.on('gosu', (data: Gosu) => {
+    //     if (data.menu && data.menu.pp) {
+    //         data.menu.pp.strains = [];
+    //     }
+    //     if (data.tourney && data.tourney.manager) {
+    //         data.tourney.manager.chat = [];
+    //     }
     //     const str = `\n${JSON.stringify(data, null, 4)}\n`;
     //     fs.appendFile(gosuPath, str, { encoding: 'utf-8' }, err => {
     //         if (err) {

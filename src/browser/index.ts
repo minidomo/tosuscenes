@@ -1,17 +1,18 @@
 import * as $ from 'jquery';
-import { io } from 'socket.io-client';
+import { io, Socket } from 'socket.io-client';
+import type { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { IOptions, RecursivePartial, SingleOrMultiple, tsParticles } from 'tsparticles';
 import { CountUp } from 'countup.js';
 import * as dayjs from 'dayjs';
 import * as Duration from 'dayjs/plugin/duration';
-import numbro from 'numbro';
 import { WebsocketBuilder, ConstantBackoff } from 'websocket-ts';
+import numbro = require('numbro');
 
 import * as snowConfig from './snow.json';
 
 dayjs.extend(Duration);
 
-let CONFIG: Config;
+let CONFIG: Config | undefined;
 
 function wait(delay: number) {
     return new Promise(resolve => {
@@ -198,6 +199,7 @@ function initSocket() {
     });
 
     socket.on('score multiplier change', (state: { team: 'red' | 'blue', value: number }) => {
+        if (CONFIG === undefined) return;
         /** @type {string} */
         let scoreMultiplierContainerQuery;
         switch (state.team) {
@@ -223,7 +225,7 @@ function initSocket() {
     return socket;
 }
 
-function initGosuSocket() {
+function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>) {
     const gosuSocket = new WebsocketBuilder('ws://127.0.0.1:24050/ws')
         .withBackoff(new ConstantBackoff(1000))
         .onOpen(() => {
@@ -334,7 +336,9 @@ function initGosuSocket() {
     }
 
     function handleData(dataString: string) {
+        if (CONFIG === undefined) return;
         const data = JSON.parse(dataString);
+        serverSocket.emit('gosu', data);
 
         // TODO menu always here?
         const menu = data.menu;
@@ -356,7 +360,7 @@ function initGosuSocket() {
             let arChange = false;
             let odChange = false;
 
-            const clients = tourney.ipcClients ? filterClients(tourney.ipcClientsl) : undefined;
+            const clients = tourney.ipcClients ? filterClients(tourney.ipcClients) : undefined;
             const isTourney = typeof tourney !== 'undefined';
             const clientsExists = typeof clients !== 'undefined' && clients.length > 0;
 
@@ -426,12 +430,10 @@ function initGosuSocket() {
                 if (manager.bools.scoreVisible) {
                     // Show scores, hide chat
                     tryFadeOut('#matchScreenChatContainer');
-                    tryFadeIn('#matchScreenRedScoreContainer');
-                    tryFadeIn('#matchScreenBlueScoreContainer');
+                    tryFadeIn('#matchScreenTeamStatsContainer');
                 } else {
                     // Hide scores, show chat
-                    tryFadeOut('#matchScreenRedScoreContainer');
-                    tryFadeOut('#matchScreenBlueScoreContainer');
+                    tryFadeOut('#matchScreenTeamStatsContainer');
                     tryFadeIn('#matchScreenChatContainer');
                     score.red.animation.update(0);
                     score.blue.animation.update(0);
@@ -486,15 +488,15 @@ function initGosuSocket() {
                 for (let i = prevChatMessageNum; i < manager.chat.length; i++) {
                     const message = manager.chat[i];
 
-                    const chatMessageDiv = $('div');
-                    const chatMessageTimeDiv = $('div');
-                    const chatMessageNameDiv = $('div');
-                    const chatMessageBodyDiv = $('div');
+                    const chatMessageDiv = $('<div>');
+                    const chatMessageTimeDiv = $('<div>');
+                    const chatMessageNameDiv = $('<div>');
+                    const chatMessageBodyDiv = $('<div>');
 
                     const teamClass = `matchScreenChatTeam${message.team}`;
                     chatMessageDiv.attr('class', 'matchScreenChatMessageContainer');
                     chatMessageTimeDiv.attr('class', 'matchScreenChatMessageTime');
-                    chatMessageTimeDiv.addClass(['matchScreenChatMessageName', teamClass]);
+                    chatMessageNameDiv.addClass(['matchScreenChatMessageName', teamClass]);
                     chatMessageBodyDiv.attr('class', 'matchScreenChatMessageBody');
 
                     chatMessageTimeDiv.html(message.time);
@@ -590,7 +592,7 @@ function loadScreenData(screenName: 'defaultScreen' | 'lineUpScreen' | 'mapScree
 
     initTsParticles();
     const socket = initSocket();
-    initGosuSocket();
+    initGosuSocket(socket);
 
     socket.emit('load config');
 })();
