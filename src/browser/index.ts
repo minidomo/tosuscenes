@@ -266,14 +266,14 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
             value: 0,
             animation: new CountUp('matchScreenRedScoreValue', 0, {
                 // Seconds
-                duration: 0.108,
+                duration: 0.2,
             }),
         },
         blue: {
             value: 0,
             animation: new CountUp('matchScreenBlueScoreValue', 0, {
                 // Seconds
-                duration: 0.108,
+                duration: 0.2,
             }),
         },
     };
