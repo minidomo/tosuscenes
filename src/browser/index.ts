@@ -373,11 +373,11 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                 const isEz = (modsNum & 2) === 2;
                 if (isDt) {
                     timeDuration = Math.round(bm.time.mp3 / 1.5);
-                    bpmAverage /= 1.5;
+                    bpmAverage *= 1.5;
                     arChange = odChange = true;
                 } else if (isHT) {
                     timeDuration = Math.round(bm.time.mp3 * 1.5);
-                    bpmAverage *= 1.5;
+                    bpmAverage /= 1.5;
                     arChange = odChange = true;
                 } else {
                     timeDuration = bm.time.mp3;
@@ -446,25 +446,31 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
 
             if (manager.bools.scoreVisible) {
                 const clients = filterClients(tourney.ipcClients);
-                const redScore = Math.floor(clients
+                let redScore = Math.floor(clients
                     .filter(client => client.team === 'left')
                     .map(client => client.gameplay.score)
                     .reduce((prev, cur) => prev + cur, 0)
                     * CONFIG.tournament.teams.red.scoreMultiplier);
-                const blueScore = Math.floor(clients
+                let blueScore = Math.floor(clients
                     .filter(client => client.team === 'right')
                     .map(client => client.gameplay.score)
                     .reduce((prev, cur) => prev + cur, 0)
                     * CONFIG.tournament.teams.blue.scoreMultiplier);
+                const redMinScore = 2 * CONFIG.tournament.teams.red.scoreMultiplier;
+                const blueMinScore = 2 * CONFIG.tournament.teams.blue.scoreMultiplier;
 
-                if (redScore > score.red.value) {
+                if (redScore !== score.red.value && redScore > redMinScore) {
                     score.red.animation.update(redScore);
                     score.red.value = redScore;
+                } else {
+                    redScore = score.red.value;
                 }
 
-                if (blueScore > score.blue.value) {
+                if (blueScore !== score.blue.value && blueScore > blueMinScore) {
                     score.blue.animation.update(blueScore);
                     score.blue.value = blueScore;
+                } else {
+                    blueScore = score.blue.value;
                 }
 
                 if (redScore > blueScore) {
