@@ -4,10 +4,6 @@ html {
     margin: 0 0 0 0;
 }
 
-#saveButtonContainer {
-    display: none;
-}
-
 #controlsContainer {
     display: flex;
     flex-flow: column;
