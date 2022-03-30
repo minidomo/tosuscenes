@@ -5,45 +5,35 @@
         "bracket": "Winners",
         "round": "RO16",
         "individualMaxPoints": 5,
-        "annotation": "qualifiers",
+        "annotation": "",
         "referees": [],
+        "showScoreMultiplier": false,
         "teams": {
             "red": {
-                "scoreMultiplier": 0.9,
-                "points": 5,
+                "scoreMultiplier": 1,
+                "points": 0,
                 "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
-                "name": "the NATION",
+                "name": "player1",
                 "players": [
-                    "abk",
-                    "Samintell",
-                    "Fufster",
-                    "Nohead",
-                    "Karasmic",
-                    "Cheery Pattern"
+                    "player1"
                 ]
             },
             "blue": {
-                "scoreMultiplier": 5,
-                "points": 4,
+                "scoreMultiplier": 1,
+                "points": 0,
                 "image": "https://a.ppy.sh/8030129?1611079612.jpeg",
-                "name": "keqing",
+                "name": "player2",
                 "players": [
-                    "TheBroham7",
-                    "DustinKazi"
+                    "player2"
                 ]
             }
         },
         "winner": {
             "color": "RED",
             "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
-            "name": "the NATION",
+            "name": "player1",
             "players": [
-                "abk",
-                "Samintell",
-                "Fufster",
-                "Nohead",
-                "Karasmic",
-                "Cheery Pattern"
+                "player1"
             ]
         }
     },
