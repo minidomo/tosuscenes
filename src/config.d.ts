@@ -7,6 +7,13 @@ declare global {
         players: string[],
     }
 
+    interface ConfigWinner {
+        color: 'RED' | 'BLUE',
+        image: string,
+        name: string,
+        players: string[],
+    }
+
     interface Config {
         tournament: {
             title: string,
@@ -15,16 +22,12 @@ declare global {
             round: string,
             individualMaxPoints: number,
             annotation: string,
+            showScoreMultiplier: boolean,
             teams: {
                 red: ConfigTeam,
                 blue: ConfigTeam,
             },
-            winner: {
-                color: 'RED' | 'BLUE',
-                image: string,
-                name: string,
-                players: string[],
-            },
+            winner: ConfigWinner,
         },
         server: {
             port: number,

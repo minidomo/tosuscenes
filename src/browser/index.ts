@@ -108,18 +108,28 @@ function initSocket() {
             pointsContainer.append(pointSpan);
         }
 
-        /** Winner data */
-        $('#winnerScreenImage').attr('src', config.tournament.winner.image);
+        if (config.tournament.showScoreMultiplier) {
+            tryFadeIn('#matchScreenRedScoreMultiplierContainer');
+            tryFadeIn('#matchScreenBlueScoreMultiplierContainer');
+        } else {
+            tryFadeOut('#matchScreenRedScoreMultiplierContainer');
+            tryFadeOut('#matchScreenBlueScoreMultiplierContainer');
+        }
 
+        /** Winner data */
         $('#winnerScreenTitle').html(config.tournament.title);
         $('#winnerScreenSubtitle').html(config.tournament.subtitle);
         $('#winnerScreenBracket').html(`${config.tournament.bracket} Bracket`);
         $('#winnerScreenRound').html(config.tournament.round);
 
+        updateWinnerDisplay(config.tournament.winner);
+    });
+
+    function updateWinnerDisplay(winner: ConfigWinner) {
         let winnerTeamTextColorHex = '#000000';
         const winnerTeamTextElement = $('#winnerScreenTeamText');
-        winnerTeamTextElement.html(`TEAM ${config.tournament.winner.color}`);
-        switch (config.tournament.winner.color) {
+        winnerTeamTextElement.html(`TEAM ${winner.color}`);
+        switch (winner.color) {
             case 'RED': {
                 winnerTeamTextColorHex = '#A91418';
                 break;
@@ -129,23 +139,24 @@ function initSocket() {
                 break;
             }
             default: {
-                console.error(`invalid winner color: ${config.tournament.winner.color}`);
+                console.error(`invalid winner color: ${winner.color}`);
                 break;
             }
         }
         winnerTeamTextElement.attr('style', `background-color: ${winnerTeamTextColorHex}`);
 
-        $('#winnerScreenTeamName').html(config.tournament.winner.name);
+        $('#winnerScreenTeamName').html(winner.name);
+        $('#winnerScreenImage').attr('src', winner.image);
 
-        playersContainer = $('#winnerScreenPlayersContainer');
+        const playersContainer = $('#winnerScreenPlayersContainer');
         playersContainer.empty();
-        config.tournament.winner.players.forEach(playerName => {
+        winner.players.forEach(playerName => {
             const playerSpan = $('<span>');
             playerSpan.attr('class', 'winnerScreenPlayer');
             playerSpan.html(playerName);
             playersContainer.append(playerSpan);
         });
-    });
+    }
 
     let curScene: string | undefined;
     socket.on('scene change', newScene => {
@@ -220,6 +231,20 @@ function initSocket() {
         }
 
         $(scoreMultiplierContainerQuery).html(`(x${state.value})`);
+    });
+
+    socket.on('winner update', (winner: ConfigWinner) => {
+        updateWinnerDisplay(winner);
+    });
+
+    socket.on('show score multiplier', (showScoreMultiplier: boolean) => {
+        if (showScoreMultiplier) {
+            tryFadeIn('#matchScreenRedScoreMultiplierContainer');
+            tryFadeIn('#matchScreenBlueScoreMultiplierContainer');
+        } else {
+            tryFadeOut('#matchScreenRedScoreMultiplierContainer');
+            tryFadeOut('#matchScreenBlueScoreMultiplierContainer');
+        }
     });
 
     return socket;

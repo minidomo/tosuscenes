@@ -1,4 +1,4 @@
-import { getIO, getConfig, saveConfig } from './server';
+import { getIO, getConfig, saveConfig, getConfigPath } from './server';
 
 let config = getConfig();
 
@@ -50,6 +50,7 @@ function initPointButtonEvents() {
                 value: config.tournament.teams.red.points,
             };
             redPointElement.innerHTML = `${config.tournament.teams.red.points}`;
+            saveConfig(config);
             getIO().emit('point change', changeState);
         });
 
@@ -63,6 +64,7 @@ function initPointButtonEvents() {
                 value: config.tournament.teams.red.points,
             };
             redPointElement.innerHTML = `${config.tournament.teams.red.points}`;
+            saveConfig(config);
             getIO().emit('point change', changeState);
         });
 
@@ -76,6 +78,7 @@ function initPointButtonEvents() {
                 value: config.tournament.teams.blue.points,
             };
             bluePointElement.innerHTML = `${config.tournament.teams.blue.points}`;
+            saveConfig(config);
             getIO().emit('point change', changeState);
         });
 
@@ -89,6 +92,7 @@ function initPointButtonEvents() {
                 value: config.tournament.teams.blue.points,
             };
             bluePointElement.innerHTML = `${config.tournament.teams.blue.points}`;
+            saveConfig(config);
             getIO().emit('point change', changeState);
         });
 }
@@ -102,13 +106,14 @@ function initAnnotationButtonEvents() {
         ?.addEventListener('click', () => {
             if (annotationInput.value !== config.tournament.annotation) {
                 config.tournament.annotation = annotationInput.value;
+                saveConfig(config);
                 getIO().emit('annotation change', config.tournament.annotation);
             }
         });
 }
 
-function initDetermineWinnerButtonEvents() {
-    document.getElementById('determineWinnerButton')
+function initupdateWinnerButtonEvents() {
+    document.getElementById('updateWinnerButton')
         ?.addEventListener('click', () => {
             const teams = config.tournament.teams;
             const winner = config.tournament.winner;
@@ -123,6 +128,8 @@ function initDetermineWinnerButtonEvents() {
                 winner.name = teams.blue.name;
                 winner.players = teams.blue.players;
             }
+            saveConfig(config);
+            getIO().emit('winner update', winner);
         });
 }
 
@@ -146,6 +153,7 @@ function initScoreMultiplierButtonEvents() {
                     team: 'red',
                     value: num,
                 };
+                saveConfig(config);
                 getIO().emit('score multiplier change', state);
             }
         });
@@ -161,16 +169,41 @@ function initScoreMultiplierButtonEvents() {
                     team: 'blue',
                     value: num,
                 };
+                saveConfig(config);
                 getIO().emit('score multiplier change', state);
             }
         });
 }
 
+function initToggleScoreMultiplierButtonEvents() {
+    const showScoreMultiplierButton = document.getElementById('toggleScoreMultiplierButton') as HTMLButtonElement;
+
+    if (config.tournament.showScoreMultiplier) {
+        showScoreMultiplierButton.innerHTML = 'Hide Score Multiplier';
+    } else {
+        showScoreMultiplierButton.innerHTML = 'Show Score Multiplier';
+    }
+
+    showScoreMultiplierButton
+        .addEventListener('click', () => {
+            config.tournament.showScoreMultiplier = !config.tournament.showScoreMultiplier;
+            if (config.tournament.showScoreMultiplier) {
+                showScoreMultiplierButton.innerHTML = 'Hide Score Multiplier';
+            } else {
+                showScoreMultiplierButton.innerHTML = 'Show Score Multiplier';
+            }
+            saveConfig(config);
+            getIO().emit('show score multiplier', config.tournament.showScoreMultiplier);
+        });
+}
+
 window.addEventListener('DOMContentLoaded', () => {
+    console.log(getConfigPath());
     initSceneButtonEvents();
     initConfigButtonEvents();
     initPointButtonEvents();
     initAnnotationButtonEvents();
-    initDetermineWinnerButtonEvents();
+    initupdateWinnerButtonEvents();
     initScoreMultiplierButtonEvents();
+    initToggleScoreMultiplierButtonEvents();
 });

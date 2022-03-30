@@ -61,6 +61,10 @@ io.on('connection', socket => {
     // });
 });
 
+export function getConfigPath() {
+    return configPath;
+}
+
 export function saveConfig(configData: Config) {
     fs.writeFileSync(configPath, JSON.stringify(configData, null, 4), { encoding: 'utf-8' });
 }

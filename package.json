@@ -23,7 +23,16 @@
     "license": "MIT",
     "config": {
         "forge": {
-            "packagerConfig": {},
+            "packagerConfig": {
+                "ignore": [
+                    "tsconfig.json",
+                    ".gitignore",
+                    ".eslintrc.json",
+                    "config.json.example",
+                    "temp",
+                    ".vscode"
+                ]
+            },
             "makers": [
                 {
                     "name": "@electron-forge/maker-squirrel",
