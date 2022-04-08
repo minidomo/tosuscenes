@@ -3,7 +3,7 @@ A scene overlay for osu! tournaments!
 
 ## Usage
 
-1. Download the [latest release](https://github.com/minidomo/tosuscenes/releases/tag/v1.0.0-alpha)  
+1. Download the [latest release](https://github.com/minidomo/tosuscenes/releases/latest)  
 Unzip the files and the root folder of the program will contain `tosuscenes.exe`.
 
 2. Run tosuscenes, gosumemory, and osu! tournament client  
