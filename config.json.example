@@ -6,34 +6,33 @@
         "round": "RO16",
         "individualMaxPoints": 5,
         "annotation": "",
-        "referees": [],
         "showScoreMultiplier": false,
         "teams": {
             "red": {
                 "scoreMultiplier": 1,
-                "points": 0,
-                "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
-                "name": "player1",
+                "points": 1,
+                "image": "https://a.ppy.sh/12152770?1611079612.jpeg",
+                "name": "Red",
                 "players": [
-                    "player1"
+                    "Amb3r"
                 ]
             },
             "blue": {
                 "scoreMultiplier": 1,
                 "points": 0,
-                "image": "https://a.ppy.sh/8030129?1611079612.jpeg",
-                "name": "player2",
+                "image": "https://a.ppy.sh/6267340?1611079612.jpeg",
+                "name": "Blue",
                 "players": [
-                    "player2"
+                    "Samintell"
                 ]
             }
         },
         "winner": {
             "color": "RED",
-            "image": "https://a.ppy.sh/1583218?1611079612.jpeg",
-            "name": "player1",
+            "image": "https://a.ppy.sh/12152770?1611079612.jpeg",
+            "name": "Red",
             "players": [
-                "player1"
+                "Amb3r"
             ]
         }
     },

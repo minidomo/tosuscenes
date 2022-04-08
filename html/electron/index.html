@@ -13,10 +13,9 @@
 <body>
     <div id="controlsContainer">
 
-
         <div id="screenControlContainer">
             <div id="screenControlTextContainer">
-                <div id="screenControlText">Screen Controller</div>
+                <div id="screenControlText" class="settingTitle">Screen Controller</div>
             </div>
             <div id="screenControlInteractionContainer">
                 <div id="defaultScreenButtonContainer">
@@ -37,23 +36,9 @@
             </div>
         </div>
 
-        <div id="configContainer">
-            <div id="configTextContainer">
-                <div id="configText">Config Settings (config.json)</div>
-            </div>
-            <div id="configInteractionContainer">
-                <div id="sendButtonContainer">
-                    <button id="sendButton">Send</button>
-                </div>
-                <div id="saveButtonContainer">
-                    <button id="saveButton">Save</button>
-                </div>
-            </div>
-        </div>
-
         <div id="teamManagerContainer">
             <div id="teamManagerTextContainer">
-                <div id="teamManagerText">Team Manager</div>
+                <div id="teamManagerText" class="settingTitle">Team Manager</div>
             </div>
 
             <div class="generalTeamManagerContainer">
@@ -62,6 +47,30 @@
                 </div>
                 <div class="teamSettingsWrapper">
                     <div class="teamSettingsContainer">
+
+                        <div class="teamNameContainer">
+                            <div class="teamNameTextContainer">
+                                <div class="teamNameText">Team Name</div>
+                            </div>
+                            <div id="teamNameInputContainer">
+                                <input type="text" id="redteamNameInput">
+                            </div>
+                            <div class="teamNameUpdateButtonContainer">
+                                <button id="redteamNameUpdateButton">Update</button>
+                            </div>
+                        </div>
+
+                        <div class="teamImageUrlContainer">
+                            <div class="teamImageUrlTextContainer">
+                                <div class="teamImageUrlText">Image URL</div>
+                            </div>
+                            <div id="teamImageUrlInputContainer">
+                                <input type="text" id="redteamImageUrlInput">
+                            </div>
+                            <div class="teamImageUrlUpdateButtonContainer">
+                                <button id="redteamImageUrlUpdateButton">Update</button>
+                            </div>
+                        </div>
 
                         <div class="pointManagerContainer">
                             <div class="pointTextContainer">
@@ -90,6 +99,26 @@
                             </div>
                         </div>
 
+                        <div class="playersContainer">
+                            <div class="playersHeaderContainer">
+                                <div class="playersHeaderTextContainer">
+                                    <div class="playersHeaderText">Players</div>
+                                </div>
+                                <div class="playersIncreaseButtonContainer">
+                                    <button id="redPlayersIncrementButton">&#8593;</button>
+                                </div>
+                                <div class="playersDecreasesButtonContainer">
+                                    <button id="redPlayersDecrementButton">&#8595;</button>
+                                </div>
+                                <div class="playersUpdateButtonContainer">
+                                    <button id="redPlayersUpdateButton">Update</button>
+                                </div>
+                            </div>
+                            <div class="playersListWrapper">
+                                <div class="playersListContainer" id="redPlayersListContainer"></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
@@ -100,6 +129,30 @@
                 </div>
                 <div class="teamSettingsWrapper">
                     <div class="teamSettingsContainer">
+
+                        <div class="teamNameContainer">
+                            <div class="teamNameTextContainer">
+                                <div class="teamNameText">Team Name</div>
+                            </div>
+                            <div id="teamNameInputContainer">
+                                <input type="text" id="blueteamNameInput">
+                            </div>
+                            <div class="teamNameUpdateButtonContainer">
+                                <button id="blueteamNameUpdateButton">Update</button>
+                            </div>
+                        </div>
+
+                        <div class="teamImageUrlContainer">
+                            <div class="teamImageUrlTextContainer">
+                                <div class="teamImageUrlText">Image URL</div>
+                            </div>
+                            <div id="teamImageUrlInputContainer">
+                                <input type="text" id="blueteamImageUrlInput">
+                            </div>
+                            <div class="teamImageUrlUpdateButtonContainer">
+                                <button id="blueteamImageUrlUpdateButton">Update</button>
+                            </div>
+                        </div>
 
                         <div class="pointManagerContainer">
                             <div class="pointTextContainer">
@@ -128,35 +181,142 @@
                             </div>
                         </div>
 
+                        <div class="playersContainer">
+                            <div class="playersHeaderContainer">
+                                <div class="playersHeaderTextContainer">
+                                    <div class="playersHeaderText">Players</div>
+                                </div>
+                                <div class="playersIncreaseButtonContainer">
+                                    <button id="bluePlayersIncrementButton">&#8593;</button>
+                                </div>
+                                <div class="playersDecreasesButtonContainer">
+                                    <button id="bluePlayersDecrementButton">&#8595;</button>
+                                </div>
+                                <div class="playersUpdateButtonContainer">
+                                    <button id="bluePlayersUpdateButton">Update</button>
+                                </div>
+                            </div>
+                            <div class="playersListWrapper">
+                                <div class="playersListContainer" id="bluePlayersListContainer"></div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
 
         </div>
 
-        <div id="annotationManagerContainer">
-            <div id="annotationTextContainer">
-                <div id="annotationText">Match Annotation</div>
+        <div id="generalManagerContainer">
+            <div id="generalManagerTextContainer">
+                <div id="generalManagerText" class="settingTitle">General Settings</div>
             </div>
-            <div id="annotationInteractionContainer">
-                <div id="annotationInputContainer">
-                    <input type="text" id="annotationInput">
+
+            <div id="titleManagerContainer">
+                <div id="titleTextContainer">
+                    <div id="titleText">Title</div>
                 </div>
-                <div id="annotationUpdateButtonContainer">
-                    <button id="annotationUpdateButton">Update</button>
+                <div id="titleInteractionContainer">
+                    <div id="titleInputContainer">
+                        <input type="text" id="titleInput">
+                    </div>
+                    <div id="titleUpdateButtonContainer">
+                        <button id="titleUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="subtitleManagerContainer">
+                <div id="subtitleTextContainer">
+                    <div id="subtitleText">Subtitle</div>
+                </div>
+                <div id="subtitleInteractionContainer">
+                    <div id="subtitleInputContainer">
+                        <input type="text" id="subtitleInput">
+                    </div>
+                    <div id="subtitleUpdateButtonContainer">
+                        <button id="subtitleUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bracketManagerContainer">
+                <div id="bracketTextContainer">
+                    <div id="bracketText">Bracket</div>
+                </div>
+                <div id="bracketInteractionContainer">
+                    <div id="bracketInputContainer">
+                        <input type="text" id="bracketInput">
+                    </div>
+                    <div id="bracketUpdateButtonContainer">
+                        <button id="bracketUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="roundManagerContainer">
+                <div id="roundTextContainer">
+                    <div id="roundText">Round</div>
+                </div>
+                <div id="roundInteractionContainer">
+                    <div id="roundInputContainer">
+                        <input type="text" id="roundInput">
+                    </div>
+                    <div id="roundUpdateButtonContainer">
+                        <button id="roundUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="bestOfManagerContainer">
+                <div id="bestOfTextContainer">
+                    <div id="bestOfText">Best of</div>
+                </div>
+                <div id="bestOfInteractionContainer">
+                    <div id="bestOfInputContainer">
+                        <input type="text" id="bestOfInput">
+                    </div>
+                    <div id="bestOfUpdateButtonContainer">
+                        <button id="bestOfUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="annotationManagerContainer">
+                <div id="annotationTextContainer">
+                    <div id="annotationText">Annotation</div>
+                </div>
+                <div id="annotationInteractionContainer">
+                    <div id="annotationInputContainer">
+                        <input type="text" id="annotationInput">
+                    </div>
+                    <div id="annotationUpdateButtonContainer">
+                        <button id="annotationUpdateButton">Update</button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="updateWinnerManagerContainer">
+                <div id="updateWinnerButtonContainer">
+                    <button id="updateWinnerButton">Update Winner</button>
+                </div>
+            </div>
+
+            <div id="toggleScoreMultiplierContainer">
+                <div id="toggleScoreMultiplierButtonContainer">
+                    <button id="toggleScoreMultiplierButton">Show Score Multiplier</button>
                 </div>
             </div>
         </div>
 
-        <div id="updateWinnerManagerContainer">
-            <div id="updateWinnerButtonContainer">
-                <button id="updateWinnerButton">Update Winner</button>
+        <div id="configContainer">
+            <div id="configTextContainer">
+                <div id="configText" class="settingTitle">Config Settings (config.json)</div>
             </div>
-        </div>
-
-        <div id="toggleScoreMultiplierContainer">
-            <div id="toggleScoreMultiplierButtonContainer">
-                <button id="toggleScoreMultiplierButton">Show Score Multiplier</button>
+            <div id="configInteractionContainer">
+                <div id="sendButtonContainer">
+                    <button id="sendButton">Send</button>
+                </div>
             </div>
         </div>
 

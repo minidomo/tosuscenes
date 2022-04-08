@@ -92,3 +92,4 @@ dist/
 temp*
 config.json
 html/server/scripts/index.js
+*.zip

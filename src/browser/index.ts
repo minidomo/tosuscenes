@@ -31,7 +31,6 @@ function initSocket() {
         CONFIG = config;
 
         let playersContainer: JQuery<HTMLElement>;
-        let pointsContainer: JQuery<HTMLElement>;
 
         /** Default data */
         $('#defaultScreenTitle').html(config.tournament.title);
@@ -86,27 +85,7 @@ function initSocket() {
             $('#matchScreenAnnotationContainer').attr('style', 'display: none;');
         }
 
-        pointsContainer = $('#matchScreenRedPointsContainer');
-        pointsContainer.empty();
-        for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
-            const pointSpan = $('<span>');
-            pointSpan.attr('class', 'matchScreenPoint');
-            if (i < config.tournament.teams.red.points) {
-                pointSpan.addClass('matchScreenPointWon');
-            }
-            pointsContainer.append(pointSpan);
-        }
-
-        pointsContainer = $('#matchScreenBluePointsContainer');
-        pointsContainer.empty();
-        for (let i = 0; i < config.tournament.individualMaxPoints; i++) {
-            const pointSpan = $('<span>');
-            pointSpan.attr('class', 'matchScreenPoint');
-            if (i < config.tournament.teams.blue.points) {
-                pointSpan.addClass('matchScreenPointWon');
-            }
-            pointsContainer.append(pointSpan);
-        }
+        updatePointsDisplay(config.tournament.individualMaxPoints);
 
         if (config.tournament.showScoreMultiplier) {
             tryFadeIn('#matchScreenRedScoreMultiplierContainer');
@@ -126,6 +105,8 @@ function initSocket() {
     });
 
     function updateWinnerDisplay(winner: ConfigWinner) {
+        if (CONFIG === undefined) return;
+
         let winnerTeamTextColorHex = '#000000';
         const winnerTeamTextElement = $('#winnerScreenTeamText');
         winnerTeamTextElement.html(`TEAM ${winner.color}`);
@@ -156,6 +137,35 @@ function initSocket() {
             playerSpan.html(playerName);
             playersContainer.append(playerSpan);
         });
+
+        CONFIG.tournament.winner = winner;
+    }
+
+    function updatePointsDisplay(individualMaxPoints: number) {
+        if (CONFIG === undefined) return;
+        CONFIG.tournament.individualMaxPoints = individualMaxPoints;
+
+        let pointsContainer = $('#matchScreenRedPointsContainer');
+        pointsContainer.empty();
+        for (let i = 0; i < individualMaxPoints; i++) {
+            const pointSpan = $('<span>');
+            pointSpan.attr('class', 'matchScreenPoint');
+            if (i < CONFIG.tournament.teams.red.points) {
+                pointSpan.addClass('matchScreenPointWon');
+            }
+            pointsContainer.append(pointSpan);
+        }
+
+        pointsContainer = $('#matchScreenBluePointsContainer');
+        pointsContainer.empty();
+        for (let i = 0; i < individualMaxPoints; i++) {
+            const pointSpan = $('<span>');
+            pointSpan.attr('class', 'matchScreenPoint');
+            if (i < CONFIG.tournament.teams.blue.points) {
+                pointSpan.addClass('matchScreenPointWon');
+            }
+            pointsContainer.append(pointSpan);
+        }
     }
 
     let curScene: string | undefined;
@@ -169,14 +179,18 @@ function initSocket() {
     });
 
     socket.on('point change', (changeState: { teamColor: 'red' | 'blue', value: number }) => {
+        if (CONFIG === undefined) return;
+
         let pointContainerQuery: string;
         switch (changeState.teamColor) {
             case 'red': {
                 pointContainerQuery = '#matchScreenRedPointsContainer';
+                CONFIG.tournament.teams.red.points = changeState.value;
                 break;
             }
             case 'blue': {
                 pointContainerQuery = '#matchScreenBluePointsContainer';
+                CONFIG.tournament.teams.blue.points = changeState.value;
                 break;
             }
             default: {
@@ -211,8 +225,7 @@ function initSocket() {
 
     socket.on('score multiplier change', (state: { team: 'red' | 'blue', value: number }) => {
         if (CONFIG === undefined) return;
-        /** @type {string} */
-        let scoreMultiplierContainerQuery;
+        let scoreMultiplierContainerQuery: string;
         switch (state.team) {
             case 'red': {
                 scoreMultiplierContainerQuery = '#matchScreenRedScoreMultiplierValue';
@@ -245,6 +258,126 @@ function initSocket() {
             tryFadeOut('#matchScreenRedScoreMultiplierContainer');
             tryFadeOut('#matchScreenBlueScoreMultiplierContainer');
         }
+    });
+
+    socket.on('bracket change', (bracket: string) => {
+        if (CONFIG === undefined) return;
+        CONFIG.tournament.bracket = bracket;
+
+        $('#lineUpScreenBracket').html(`${bracket} Bracket`);
+        $('#matchScreenBracket').html(`${bracket} Bracket`);
+        $('#winnerScreenBracket').html(`${bracket} Bracket`);
+    });
+
+    socket.on('round change', (round: string) => {
+        if (CONFIG === undefined) return;
+        CONFIG.tournament.round = round;
+
+        $('#lineUpScreenRound').html(round);
+        $('#matchScreenRound').html(round);
+        $('#winnerScreenRound').html(round);
+    });
+
+    socket.on('individual max points change', (individualMaxPoints: number) => {
+        updatePointsDisplay(individualMaxPoints);
+    });
+
+    socket.on('team players change', (state: { team: 'red' | 'blue', value: string[] }) => {
+        if (CONFIG === undefined) return;
+        let playersContainerQuery: string;
+        switch (state.team) {
+            case 'red': {
+                playersContainerQuery = '#lineUpScreenRedPlayersContainer';
+                CONFIG.tournament.teams.red.players = state.value;
+                break;
+            }
+            case 'blue': {
+                playersContainerQuery = '#lineUpScreenBluePlayersContainer';
+                CONFIG.tournament.teams.blue.players = state.value;
+                break;
+            }
+            default: {
+                console.error(`unknown teamColor: ${state.team}`);
+                return;
+            }
+        }
+
+        const playersContainer = $(playersContainerQuery);
+        playersContainer.empty();
+        state.value.forEach(playerName => {
+            const playerSpan = $('<span>');
+            playerSpan.attr('class', 'lineUpScreenPlayer');
+            playerSpan.html(playerName);
+            playersContainer.append(playerSpan);
+        });
+    });
+
+    socket.on('title change', (title: string) => {
+        if (CONFIG === undefined) return;
+        CONFIG.tournament.title = title;
+
+        $('#defaultScreenTitle').html(title);
+        $('#lineUpScreenTitle').html(title);
+        $('#matchScreenTitle').html(title);
+        $('#winnerScreenTitle').html(title);
+    });
+
+    socket.on('subtitle change', (subtitle: string) => {
+        if (CONFIG === undefined) return;
+        CONFIG.tournament.subtitle = subtitle;
+
+        $('#defaultScreenSubtitle').html(subtitle);
+        $('#lineUpScreenSubtitle').html(subtitle);
+        $('#matchScreenSubtitle').html(subtitle);
+        $('#winnerScreenSubtitle').html(subtitle);
+    });
+
+    socket.on('team name change', (state: { team: 'red' | 'blue', value: string }) => {
+        if (CONFIG === undefined) return;
+        let team: string;
+        switch (state.team) {
+            case 'red': {
+                team = 'Red';
+                CONFIG.tournament.teams.red.name = state.value;
+                break;
+            }
+            case 'blue': {
+                team = 'Blue';
+                CONFIG.tournament.teams.blue.name = state.value;
+                break;
+            }
+            default: {
+                console.error(`unknown teamColor: ${state.team}`);
+                return;
+            }
+        }
+
+        $(`#lineUpScreen${team}TeamName`).html(state.value);
+        $(`#matchScreen${team}TeamName`).html(state.value);
+    });
+
+    socket.on('team image url change', (state: { team: 'red' | 'blue', value: string }) => {
+        if (CONFIG === undefined) return;
+        let team: string;
+        switch (state.team) {
+            case 'red': {
+                team = 'Red';
+                CONFIG.tournament.teams.red.image = state.value;
+                break;
+            }
+            case 'blue': {
+                team = 'Blue';
+                CONFIG.tournament.teams.blue.image = state.value;
+                break;
+            }
+            default: {
+                console.error(`unknown teamColor: ${state.team}`);
+                return;
+            }
+        }
+
+        $(`#lineUpScreen${team}Image`).attr('src', state.value);
+        $(`#matchScreen${team}Image`).attr('src', state.value);
     });
 
     return socket;
@@ -378,8 +511,7 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
             trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
             trySetInnerHtml(matchMapDifficultyName, bm.metadata.difficulty);
 
-            /** @type {number} */
-            let timeDuration;
+            let timeDuration: number;
             let bpmAverage = (bm.stats.BPM.min + bm.stats.BPM.max) / 2;
             let csChange = false;
             let arChange = false;

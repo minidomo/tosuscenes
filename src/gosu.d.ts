@@ -41,7 +41,63 @@ declare global {
         }
     }
 
+    interface GosuBeatmap {
+        time: {
+            firstObj: number,
+            current: number,
+            full: number,
+            mp3: number,
+        },
+        id: number,
+        set: number,
+        md5: string,
+        rankedStatus: number,
+        metadata: {
+            artist: string,
+            artistOriginal: string,
+            title: string,
+            titleOriginal: string,
+            mapper: string,
+            difficulty: string,
+        },
+        stats: {
+            AR: number,
+            CS: number,
+            OD: number,
+            HP: number,
+            SR: number,
+            BPM: {
+                min: number,
+                max: number,
+            },
+            maxCombo: number,
+            fullSR: number,
+            memoryAR: number,
+            memoryCS: number,
+            memoryOD: number,
+            memoryHP: number,
+        },
+        path: {
+            full: string,
+            folder: string,
+            file: string,
+            bg: string,
+            audio: string,
+        },
+    }
+
     interface GosuMenu {
+        mainMenu: {
+            bassDensity: number,
+        },
+        state: number,
+        gameMode: number,
+        isChatEnabled: number,
+        bm: GosuBeatmap,
+        mods: {
+            num: number,
+            str: string,
+        },
         pp: {
             100: number,
             99: number,

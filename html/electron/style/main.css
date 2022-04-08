@@ -1,7 +1,37 @@
+@font-face {
+    font-family: "Torus Light";
+    src: url("fonts/Torus\ Light.otf");
+}
+
+@font-face {
+    font-family: "Torus Regular";
+    src: url("fonts/Torus\ Regular.otf");
+}
+
+@font-face {
+    font-family: "Torus Bold";
+    src: url("fonts/Torus\ Bold.otf");
+}
+
+@font-face {
+    font-family: "Torus SemiBold";
+    src: url("fonts/Torus\ SemiBold.otf");
+}
+
 body,
 html {
     padding: 0 0 0 0;
     margin: 0 0 0 0;
+    font-family: Torus Regular;
+}
+
+button,
+input {
+    font-family: Torus Regular;
+}
+
+.settingTitle {
+    font-family: Torus SemiBold;
 }
 
 #controlsContainer {
@@ -35,7 +65,8 @@ html {
     flex-flow: column;
 }
 
-.teamSettingsWrapper {
+.teamSettingsWrapper,
+.playersListWrapper {
     display: flow-root;
     box-sizing: border-box;
     padding: 0 0 0 10px;
@@ -52,18 +83,31 @@ html {
     gap: 5px;
 }
 
-.pointManagerContainer, .scoreMultiplierContainer {
+.pointManagerContainer,
+.teamNameContainer,
+.teamImageUrlContainer,
+.scoreMultiplierContainer {
     display: flex;
     flex-flow: row;
     gap: 10px;
 }
 
-#annotationManagerContainer {
+#annotationManagerContainer,
+#titleManagerContainer,
+#subtitleManagerContainer,
+#bestOfManagerContainer,
+#roundManagerContainer,
+#bracketManagerContainer {
     display: flex;
     flex-flow: column;
 }
 
-#annotationInteractionContainer {
+#annotationInteractionContainer,
+#titleInteractionContainer,
+#subtitleInteractionContainer,
+#bestOfInteractionContainer,
+#roundInteractionContainer,
+#bracketInteractionContainer {
     display: flex;
     flex-flow: row;
 }
@@ -71,4 +115,27 @@ html {
 #determineWinnerManagerContainer {
     display: flex;
     flex-flow: row;
+}
+
+#generalManagerContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 5px;
+}
+
+.playersContainer {
+    display: flex;
+    flex-flow: column;
+}
+
+.playersHeaderContainer {
+    display: flex;
+    flex-flow: row;
+    gap: 10px;
+}
+
+.playersListContainer {
+    display: flex;
+    flex-flow: column;
+    gap: 2px;
 }
