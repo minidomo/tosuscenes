@@ -13,12 +13,33 @@ function initSceneButtonEvents() {
             const match = e.id.match(sceneRegex);
             if (match) {
                 const [, curScene] = match;
+                if (curScene === 'winnerScreen') {
+                    updateWinner();
+                }
                 getIO().emit('scene change', curScene);
             } else {
                 console.error(`did not match scene regex: ${e.id}`);
             }
         });
     });
+
+    function updateWinner() {
+        const teams = config.tournament.teams;
+        const winner = config.tournament.winner;
+        if (teams.red.points > teams.blue.points) {
+            winner.color = 'RED';
+            winner.image = teams.red.image;
+            winner.name = teams.red.name;
+            winner.players = teams.red.players;
+        } else if (teams.red.points < teams.blue.points) {
+            winner.color = 'BLUE';
+            winner.image = teams.blue.image;
+            winner.name = teams.blue.name;
+            winner.players = teams.blue.players;
+        }
+        saveConfig(config);
+        getIO().emit('winner update', winner);
+    }
 }
 
 function initConfigButtonEvents() {
@@ -105,27 +126,6 @@ function initAnnotationButtonEvents() {
                 saveConfig(config);
                 getIO().emit('annotation change', config.tournament.annotation);
             }
-        });
-}
-
-function initUpdateWinnerButtonEvents() {
-    document.getElementById('updateWinnerButton')
-        ?.addEventListener('click', () => {
-            const teams = config.tournament.teams;
-            const winner = config.tournament.winner;
-            if (teams.red.points > teams.blue.points) {
-                winner.color = 'RED';
-                winner.image = teams.red.image;
-                winner.name = teams.red.name;
-                winner.players = teams.red.players;
-            } else if (teams.red.points < teams.blue.points) {
-                winner.color = 'BLUE';
-                winner.image = teams.blue.image;
-                winner.name = teams.blue.name;
-                winner.players = teams.blue.players;
-            }
-            saveConfig(config);
-            getIO().emit('winner update', winner);
         });
 }
 
@@ -426,7 +426,6 @@ window.addEventListener('DOMContentLoaded', () => {
     initConfigButtonEvents();
     initPointButtonEvents();
     initAnnotationButtonEvents();
-    initUpdateWinnerButtonEvents();
     initScoreMultiplierButtonEvents();
     initToggleScoreMultiplierButtonEvents();
     initBracketButtonEvents();

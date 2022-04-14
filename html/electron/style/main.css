@@ -112,11 +112,6 @@ input {
     flex-flow: row;
 }
 
-#determineWinnerManagerContainer {
-    display: flex;
-    flex-flow: row;
-}
-
 #generalManagerContainer {
     display: flex;
     flex-flow: column;
