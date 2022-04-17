@@ -32,6 +32,10 @@ declare global {
         server: {
             port: number,
         },
+        api: {
+            clientId: number,
+            clientSecret: string,
+        },
     }
 }
 

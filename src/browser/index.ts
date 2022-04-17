@@ -1,12 +1,13 @@
 import * as $ from 'jquery';
-import { io, Socket } from 'socket.io-client';
-import type { DefaultEventsMap } from 'socket.io/dist/typed-events';
 import { IOptions, RecursivePartial, SingleOrMultiple, tsParticles } from 'tsparticles';
 import { CountUp } from 'countup.js';
 import * as dayjs from 'dayjs';
 import * as Duration from 'dayjs/plugin/duration';
 import { WebsocketBuilder, ConstantBackoff } from 'websocket-ts';
-import numbro = require('numbro');
+import { getDifficultyStats } from './util/difficulty';
+import { getSocket } from './serverSocket';
+import type { Socket } from 'socket.io-client';
+import type { DefaultEventsMap } from 'socket.io/dist/typed-events';
 
 import * as snowConfig from './snow.json';
 
@@ -25,7 +26,7 @@ function initTsParticles() {
 }
 
 function initSocket() {
-    const socket = io();
+    const socket = getSocket();
 
     socket.on('load config', (config: Config) => {
         CONFIG = config;
@@ -442,15 +443,6 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
         }
     }
 
-    function getStatString(stat: number, mantissa: number): string {
-        const num = numbro(stat).format({
-            optionalMantissa: true,
-            trimMantissa: true,
-            mantissa,
-        });
-        return num;
-    }
-
     function removeUnseenMessages(chatContainer: JQuery<HTMLElement>) {
         const sTop = chatContainer.prop('scrollTop');
         if (sTop > 0) {
@@ -474,16 +466,16 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
 
     function getUniformMods(clients: GosuIpcClient[]): number {
         if (clients.length === 0) return 0;
-        let mods: number | undefined;
+        let uniformMods: number | undefined;
         clients.forEach(client => {
             const curMods = client.gameplay.mods.num;
-            if (mods === undefined) {
-                mods = curMods;
+            if (uniformMods === undefined) {
+                uniformMods = curMods;
             } else {
-                mods &= curMods;
+                uniformMods &= curMods;
             }
         });
-        return mods as number;
+        return uniformMods as number;
     }
 
     function filterClients(clients: GosuIpcClient[]): GosuIpcClient[] {
@@ -505,68 +497,29 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
         if (menu.bm) {
             const bm = menu.bm;
 
-            // TODO doesnt display correct values after mods since mods not on menu
-            trySetInnerHtml(defaultSongMetadata, `${bm.metadata.artist} - '${bm.metadata.title}'`);
-            trySetInnerHtml(matchMapTitle, `${bm.metadata.artist} - ${bm.metadata.title}`);
+            const titleFix = bm.metadata.title.replace('<', '&lt;').replace('>', '&gt;');
+            trySetInnerHtml(defaultSongMetadata, `${bm.metadata.artist} - '${titleFix}'`);
+            trySetInnerHtml(matchMapTitle, `${bm.metadata.artist} - ${titleFix}`);
             trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
             trySetInnerHtml(matchMapDifficultyName, bm.metadata.difficulty);
-
-            let timeDuration: number;
-            let bpmAverage = (bm.stats.BPM.min + bm.stats.BPM.max) / 2;
-            let csChange = false;
-            let arChange = false;
-            let odChange = false;
 
             const clients = tourney.ipcClients ? filterClients(tourney.ipcClients) : undefined;
             const isTourney = typeof tourney !== 'undefined';
             const clientsExists = typeof clients !== 'undefined' && clients.length > 0;
 
+            let mods = menu.mods.num as number;
             if (isTourney && clientsExists) {
-                // Get any team to check if dt/ht is on
-                const modsNum = getUniformMods(clients);
-                const isDt = (modsNum & 64) === 64;
-                const isHT = (modsNum & 256) === 256;
-                const isHr = (modsNum & 16) === 16;
-                const isEz = (modsNum & 2) === 2;
-                if (isDt) {
-                    timeDuration = Math.round(bm.time.mp3 / 1.5);
-                    bpmAverage *= 1.5;
-                    arChange = odChange = true;
-                } else if (isHT) {
-                    timeDuration = Math.round(bm.time.mp3 * 1.5);
-                    bpmAverage /= 1.5;
-                    arChange = odChange = true;
-                } else {
-                    timeDuration = bm.time.mp3;
-                }
+                mods = getUniformMods(clients);
+            }
 
-                if (isHr || isEz) {
-                    csChange = arChange = odChange = true;
-                }
-            } else {
-                timeDuration = bm.time.mp3;
-            }
-            trySetInnerHtml(matchMapLengthValue, dayjs.duration(timeDuration).format('mm:ss'));
-            trySetInnerHtml(matchMapBpmValue, getStatString(bpmAverage, 1));
+            const stats = getDifficultyStats(data as Gosu, mods);
 
-            let csStr = getStatString(bm.stats.memoryCS, 1);
-            let arStr = getStatString(bm.stats.memoryAR, 1);
-            let odStr = getStatString(bm.stats.memoryOD, 1);
-            if (csChange) {
-                csStr += '*';
-            }
-            if (arChange) {
-                arStr += '*';
-            }
-            if (odChange) {
-                odStr += '*';
-            }
-            trySetInnerHtml(matchMapCsValue, csStr);
-            trySetInnerHtml(matchMapArValue, arStr);
-            trySetInnerHtml(matchMapOdValue, odStr);
-
-            const sr = `${bm.stats.fullSR}*`;
-            trySetInnerHtml(matchMapSrValue, sr);
+            trySetInnerHtml(matchMapLengthValue, dayjs.duration(stats.time).format('mm:ss'));
+            trySetInnerHtml(matchMapBpmValue, `${stats.bpm}`);
+            trySetInnerHtml(matchMapCsValue, `${stats.cs}`);
+            trySetInnerHtml(matchMapArValue, `${stats.ar}`);
+            trySetInnerHtml(matchMapOdValue, `${stats.od}`);
+            trySetInnerHtml(matchMapSrValue, `${stats.sr}`);
 
             if (prevBgPath !== bm.path.full) {
                 const img = bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25');

@@ -3,40 +3,44 @@
         "title": "Yeehaw Cup 3",
         "subtitle": "Spring 2022",
         "bracket": "Winners",
-        "round": "RO16",
-        "individualMaxPoints": 5,
+        "round": "Semifinals",
+        "individualMaxPoints": 6,
         "annotation": "",
         "showScoreMultiplier": false,
         "teams": {
             "red": {
                 "scoreMultiplier": 1,
-                "points": 1,
-                "image": "https://a.ppy.sh/12152770?1611079612.jpeg",
+                "points": 0,
+                "image": "https://a.ppy.sh/13010854?1611079612.jpeg",
                 "name": "Red",
                 "players": [
-                    "Amb3r"
+                    "MyAngelElaina"
                 ]
             },
             "blue": {
                 "scoreMultiplier": 1,
                 "points": 0,
-                "image": "https://a.ppy.sh/6267340?1611079612.jpeg",
+                "image": "https://a.ppy.sh/4334976?1611079612.jpeg",
                 "name": "Blue",
                 "players": [
-                    "Samintell"
+                    "Aeril"
                 ]
             }
         },
         "winner": {
             "color": "RED",
-            "image": "https://a.ppy.sh/12152770?1611079612.jpeg",
+            "image": "https://a.ppy.sh/10229383?1611079612.jpeg",
             "name": "Red",
             "players": [
-                "Amb3r"
+                "ShadowRin"
             ]
         }
     },
     "server": {
         "port": 50423
+    },
+    "api": {
+        "clientId": 0,
+        "clientSecret": ""
     }
 }

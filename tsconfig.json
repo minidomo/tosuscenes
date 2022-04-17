@@ -36,11 +36,14 @@
                 "node_modules/*"
             ],
             "numbro": [
-                "src/numbro-override.d.ts"
+                "src/types/numbro-override.d.ts"
+            ],
+            "rosu-pp": [
+                "src/types/rosu-override.d.ts"
             ]
         }
     },
     "include": [
-        "src/**/*",
+        "src/**/*"
     ]
 }
