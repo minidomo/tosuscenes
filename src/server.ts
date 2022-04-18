@@ -60,7 +60,6 @@ io.on('connection', socket => {
     socket.on('beatmap base difficulty stats', async (content: BeatmapDifficultyStatsQuery) => {
         try {
             const data = await v2.beatmap.get(content.id);
-
             const stats: DifficultyStats = {
                 id: content.id,
                 mods: content.mods,

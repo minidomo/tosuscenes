@@ -41,6 +41,13 @@ declare global {
         }
     }
 
+    interface GosuChatMessage {
+        time: string,
+        name: string,
+        messageBody: string,
+        team: 'left' | 'right' | 'unknown',
+    }
+
     interface GosuBeatmap {
         time: {
             firstObj: number,
@@ -109,23 +116,152 @@ declare global {
         },
     }
 
-    interface GosuTourney {
-        manager: {
-            chat: number[],
+    interface GosuManager {
+        ipcState: number,
+        bestOF: number,
+        teamName: {
+            left: string,
+            right: string,
+        },
+        stars: {
+            left: number,
+            right: number,
+        },
+        bools: {
+            scoreVisible: boolean,
+            starsVisible: boolean,
+        },
+        chat: null | GosuChatMessage[],
+        gameplay: {
+            score: {
+                left: number,
+                right: number,
+            },
         },
     }
 
-    interface Gosu {
-        settings: {
-            showInterface: boolean,
-            folders: {
-                game: string,
-                skin: string,
-                songs: string,
-            },
+    interface GosuTourney {
+        manager: GosuManager,
+        ipcClients: null | GosuIpcClient[],
+    }
+
+    interface GosuSettings {
+        showInterface: boolean,
+        folders: {
+            game: string,
+            skin: string,
+            songs: string,
         },
+    }
+
+    interface GosuResultsScreen {
+        name: string,
+        score: number,
+        maxCombo: number,
+        mods: {
+            num: number,
+            str: string,
+        },
+        300: number,
+        geki: number,
+        100: number,
+        katu: number,
+        50: number,
+        0: number,
+    }
+
+    interface GosuGameplay {
+        gameMode: number,
+        name: string,
+        score: number,
+        accuracy: number,
+        combo: {
+            current: number,
+            max: number,
+        },
+        hp: {
+            normal: number,
+            smooth: number
+        },
+        hits: {
+            300: number,
+            geki: number,
+            100: number,
+            katu: number,
+            50: number,
+            0: number,
+            sliderBreaks: number,
+            grade: {
+                current: string,
+                maxThisPlay: string,
+            },
+            unstableRate: number,
+            hitErrorArray: null | number[],
+        },
+        pp: {
+            current: number,
+            fc: number,
+            maxThisPlay: number
+        },
+        keyOverlay: {
+            k1: {
+                isPressed: boolean,
+                count: number
+            },
+            k2: {
+                isPressed: boolean,
+                count: number
+            },
+            m1: {
+                isPressed: boolean,
+                count: number
+            },
+            m2: {
+                isPressed: boolean,
+                count: number
+            }
+        },
+        leaderboard: {
+            hasLeaderboard: boolean,
+            isVisible: boolean,
+            ourplayer: {
+                name: string,
+                score: number,
+                combo: number,
+                maxCombo: number,
+                mods: string,
+                h300: number,
+                h100: number,
+                h50: number,
+                h0: number,
+                team: number,
+                position: number,
+                isPassing: number
+            },
+            slots: null | GosuPlayerSlot[]
+        }
+    }
+
+    interface GosuPlayerSlot {
+        name: string,
+        score: number,
+        combo: number,
+        maxCombo: number,
+        mods: string,
+        h300: number,
+        h100: number,
+        h50: number,
+        h0: number,
+        team: number,
+        position: number,
+        isPassing: number,
+    }
+
+    interface Gosu {
+        settings: GosuSettings,
         menu: GosuMenu,
         tourney: GosuTourney,
+        resultsScreen: GosuResultsScreen,
     }
 }
 

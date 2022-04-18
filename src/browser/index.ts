@@ -417,7 +417,7 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
     const matchChatContainer = $('#matchScreenChatContainer');
 
     let prevBgPath: string | undefined;
-    let prevScoreVisible: string | undefined;
+    let prevScoreVisible: boolean | undefined;
     let prevScoreLead: 'red' | 'blue' | 'tie' = 'tie';
     let prevChatMessageNum = 0;
     const score = {
@@ -464,79 +464,68 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
         }
     }
 
-    function getUniformMods(clients: GosuIpcClient[]): number {
-        if (clients.length === 0) return 0;
-        let uniformMods: number | undefined;
+    function getUniformMods(clients: GosuIpcClient[] | null): number {
+        if (clients === null) {
+            return 0;
+        }
+        let mods: number | undefined;
         clients.forEach(client => {
-            const curMods = client.gameplay.mods.num;
-            if (uniformMods === undefined) {
-                uniformMods = curMods;
+            if (mods === undefined) {
+                mods = client.gameplay.mods.num;
             } else {
-                uniformMods &= curMods;
+                mods &= client.gameplay.mods.num;
             }
         });
-        return uniformMods as number;
+        return mods as number;
     }
 
-    function filterClients(clients: GosuIpcClient[]): GosuIpcClient[] {
-        return clients.filter(client => {
-            if (client.team !== 'left' && client.team !== 'right') return false;
-            return client.spectating.userID !== 0;
-        });
+    function getActiveClients(clients: GosuIpcClient[] | null): GosuIpcClient[] {
+        return clients === null ? [] : clients.filter(client => client.spectating.userID !== 0);
+    }
+
+    function isTourneyClient(gosu: Gosu) {
+        return gosu.tourney.manager.ipcState !== 0;
     }
 
     function handleData(dataString: string) {
         if (CONFIG === undefined) return;
-        const data = JSON.parse(dataString);
-        serverSocket.emit('gosu', data);
+        const gosu = JSON.parse(dataString) as Gosu;
+        serverSocket.emit('gosu', gosu);
 
-        // TODO menu always here?
-        const menu = data.menu;
-        const tourney = data.tourney;
+        const { menu, tourney } = gosu;
+        const { bm } = menu;
+        const { manager } = tourney;
 
-        if (menu.bm) {
-            const bm = menu.bm;
+        const titleFix = bm.metadata.title.replace('<', '&lt;').replace('>', '&gt;');
+        const difficultyNameFix = bm.metadata.difficulty.replace('<', '&lt;').replace('>', '&gt;');
 
-            const titleFix = bm.metadata.title.replace('<', '&lt;').replace('>', '&gt;');
-            trySetInnerHtml(defaultSongMetadata, `${bm.metadata.artist} - '${titleFix}'`);
-            trySetInnerHtml(matchMapTitle, `${bm.metadata.artist} - ${titleFix}`);
-            trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
-            trySetInnerHtml(matchMapDifficultyName, bm.metadata.difficulty);
+        trySetInnerHtml(defaultSongMetadata, `${bm.metadata.artist} - '${titleFix}'`);
+        trySetInnerHtml(matchMapTitle, `${bm.metadata.artist} - ${titleFix}`);
+        trySetInnerHtml(matchMapMapperName, bm.metadata.mapper);
+        trySetInnerHtml(matchMapDifficultyName, difficultyNameFix);
 
-            const clients = tourney.ipcClients ? filterClients(tourney.ipcClients) : undefined;
-            const isTourney = typeof tourney !== 'undefined';
-            const clientsExists = typeof clients !== 'undefined' && clients.length > 0;
+        let mods = menu.mods.num;
+        if (isTourneyClient(gosu)) {
+            mods = getUniformMods(tourney.ipcClients);
+        }
 
-            let mods = menu.mods.num as number;
-            if (isTourney && clientsExists) {
-                mods = getUniformMods(clients);
-            }
+        const stats = getDifficultyStats(gosu, mods);
 
-            const stats = getDifficultyStats(data as Gosu, mods);
+        trySetInnerHtml(matchMapLengthValue, dayjs.duration(stats.time).format('mm:ss'));
+        trySetInnerHtml(matchMapBpmValue, `${stats.bpm}`);
+        trySetInnerHtml(matchMapCsValue, `${stats.cs}`);
+        trySetInnerHtml(matchMapArValue, `${stats.ar}`);
+        trySetInnerHtml(matchMapOdValue, `${stats.od}`);
+        trySetInnerHtml(matchMapSrValue, `${stats.sr}`);
 
-            trySetInnerHtml(matchMapLengthValue, dayjs.duration(stats.time).format('mm:ss'));
-            trySetInnerHtml(matchMapBpmValue, `${stats.bpm}`);
-            trySetInnerHtml(matchMapCsValue, `${stats.cs}`);
-            trySetInnerHtml(matchMapArValue, `${stats.ar}`);
-            trySetInnerHtml(matchMapOdValue, `${stats.od}`);
-            trySetInnerHtml(matchMapSrValue, `${stats.sr}`);
-
-            if (prevBgPath !== bm.path.full) {
-                const img = bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25');
-                // TODO url method inconsistent?
-                const url = `http://localhost:24050/Songs/${img}?a=${Math.random()}`;
-                $('#matchScreenMapBg').attr('src', url);
-            }
-
+        if (prevBgPath !== bm.path.full) {
+            const url = `https://assets.ppy.sh/beatmaps/${bm.set}/covers/cover@2x.jpg?1649100827`;
+            $('#matchScreenMapBg').attr('src', url);
             prevBgPath = bm.path.full;
         }
 
-        if (tourney) {
-            // TODO manager always here?
-            const manager = tourney.manager;
-
+        if (isTourneyClient(gosu)) {
             if (prevScoreVisible !== manager.bools.scoreVisible) {
-                prevScoreVisible = manager.bools.scoreVisible;
                 if (manager.bools.scoreVisible) {
                     // Show scores, hide chat
                     tryFadeOut('#matchScreenChatContainer');
@@ -550,12 +539,12 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                     score.red.value = 0;
                     score.blue.value = 0;
                 }
+                prevScoreVisible = manager.bools.scoreVisible;
             }
 
-            const chatExists = !!manager.chat;
-
             if (manager.bools.scoreVisible) {
-                const clients = filterClients(tourney.ipcClients);
+                const clients = getActiveClients(tourney.ipcClients);
+
                 let redScore = Math.floor(clients
                     .filter(client => client.team === 'left')
                     .map(client => client.gameplay.score)
@@ -600,7 +589,9 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                     matchBlueScoreValue.removeClass('matchScreenScoreLeading');
                     prevScoreLead = 'tie';
                 }
-            } else if (chatExists && prevChatMessageNum !== manager.chat.length) {
+            }
+
+            if (manager.chat !== null && prevChatMessageNum !== manager.chat.length) {
                 for (let i = prevChatMessageNum; i < manager.chat.length; i++) {
                     const message = manager.chat[i];
 
@@ -615,7 +606,7 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                     chatMessageNameDiv.addClass(['matchScreenChatMessageName', teamClass]);
                     chatMessageBodyDiv.attr('class', 'matchScreenChatMessageBody');
 
-                    chatMessageTimeDiv.html(message.time);
+                    chatMessageTimeDiv.html(`${message.time}:${dayjs().format('ss')}`);
                     chatMessageNameDiv.html(`${message.name}:`);
                     chatMessageBodyDiv.html(message.messageBody);
 
