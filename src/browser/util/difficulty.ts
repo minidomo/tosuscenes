@@ -57,12 +57,12 @@ export function adjustDifficultyStats(stats: DifficultyStats, curMods: number): 
     if ((curMods & MODS.HT) === MODS.HT) {
         retStats.ar = trimMantissa(msToAr(arToMs(retStats.ar) * 4 / 3), 1);
         retStats.od = trimMantissa(msToOd(odToMs(retStats.od) * 4 / 3 + 0.66), 1);
-        retStats.bpm = Math.floor(retStats.bpm * 3 / 4);
+        retStats.bpm = trimMantissa(retStats.bpm * 3 / 4, 3);
         retStats.time = Math.floor(retStats.time * 3 / 2);
     } else if ((curMods & MODS.DT) === MODS.DT) {
         retStats.ar = trimMantissa(Math.min(11, msToAr(arToMs(retStats.ar) * 2 / 3)), 1);
         retStats.od = trimMantissa(msToOd(odToMs(retStats.od) * 2 / 3 + 0.33), 1);
-        retStats.bpm = Math.floor(retStats.bpm * 3 / 2);
+        retStats.bpm = trimMantissa(retStats.bpm * 3 / 2, 3);
         retStats.time = Math.floor(retStats.time * 2 / 3);
     }
 
