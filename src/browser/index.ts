@@ -519,7 +519,9 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
         trySetInnerHtml(matchMapSrValue, `${stats.sr}`);
 
         if (prevBgPath !== bm.path.full) {
-            const url = `https://assets.ppy.sh/beatmaps/${bm.set}/covers/cover@2x.jpg?1649100827`;
+            const img = bm.path.full.replace(/#/g, '%23').replace(/%/g, '%25');
+            const url = `http://localhost:24050/Songs/${img}?a=${Math.random()}`;
+            // const url = `https://assets.ppy.sh/beatmaps/${bm.set}/covers/cover@2x.jpg?1649100827`;
             $('#matchScreenMapBg').attr('src', url);
             prevBgPath = bm.path.full;
         }
