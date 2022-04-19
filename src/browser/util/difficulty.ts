@@ -96,6 +96,9 @@ export function getDifficultyStats(gosu: Gosu, mods: number): DifficultyStats {
             bpm: Math.floor((bm.stats.BPM.min + bm.stats.BPM.max) / 2),
             time: bm.time.mp3,
         };
+        if (bm.id <= 0) {
+            return stats;
+        }
         baseStatsMap.set(bm.id, stats);
 
         const content: BeatmapDifficultyStatsQuery = {
