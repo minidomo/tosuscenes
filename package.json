@@ -88,8 +88,8 @@
         "electron-squirrel-startup": "^1.0.0",
         "express": "^4.17.3",
         "needle": "^3.1.0",
-        "osu-api-extended": "^2.1.4",
-        "rosu-pp": "^0.5.2",
+        "osu-api-extended": "^2.1.5",
+        "rosu-pp": "^0.5.3",
         "socket.io": "^4.4.1",
         "tslib": "^2.3.1"
     }

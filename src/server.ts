@@ -4,10 +4,11 @@ import { createServer } from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { auth, v2 } from 'osu-api-extended';
+import { calculate } from 'rosu-pp';
+// TODO maybe include back up method if people dont want to install rust
+
 // Import * as needle from 'needle';
 // import { pp_calc_object } from 'osu-api-extended/dist/types/tools';
-import rosu = require('rosu-pp');
-// TODO maybe include back up method if people dont want to install rust
 
 const configPath = path.join(__dirname, '../config.json');
 
@@ -78,7 +79,10 @@ io.on('connection', socket => {
     });
 
     socket.on('beatmap star difficulty stats', (content: BeatmapDifficultyStatsQuery) => {
-        const [data] = rosu.calculate({ path: content.path, params: [{ mods: content.mods }] });
+        const [data] = calculate({
+            path: content.path,
+            mods: content.mods,
+        });
 
         const stats: PartialDifficultyStats = {
             id: content.id,

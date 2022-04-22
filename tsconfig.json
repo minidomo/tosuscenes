@@ -4,7 +4,7 @@
         "module": "commonjs",
         "noImplicitAny": true,
         "sourceMap": true,
-        "baseUrl": ".",
+        "baseUrl": "./",
         "outDir": "dist",
         "moduleResolution": "node",
         "resolveJsonModule": true,
@@ -32,14 +32,8 @@
         "experimentalDecorators": true,
         "target": "ES2015",
         "paths": {
-            "*": [
-                "node_modules/*"
-            ],
             "numbro": [
-                "src/types/numbro-override.d.ts"
-            ],
-            "rosu-pp": [
-                "src/types/rosu-override.d.ts"
+                "src/types/numbro.d.ts"
             ]
         }
     },
