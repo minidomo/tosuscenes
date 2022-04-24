@@ -4,8 +4,8 @@ import { createServer } from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { auth, v2 } from 'osu-api-extended';
-import { calculate } from 'rosu-pp';
-// TODO maybe include back up method if people dont want to install rust
+// Import { calculate } from 'rosu-pp';
+import { beatmapAttributes } from 'osu-bma';
 
 // Import * as needle from 'needle';
 // import { pp_calc_object } from 'osu-api-extended/dist/types/tools';
@@ -79,18 +79,22 @@ io.on('connection', socket => {
     });
 
     socket.on('beatmap star difficulty stats', (content: BeatmapDifficultyStatsQuery) => {
-        const [data] = calculate({
-            path: content.path,
-            mods: content.mods,
+        fs.readFile(content.path, { encoding: 'utf-8' }, (err, data) => {
+            if (err) {
+                console.error(err);
+                return;
+            }
+
+            const attr = beatmapAttributes(data, content.mods);
+
+            const stats: PartialDifficultyStats = {
+                id: content.id,
+                mods: content.mods,
+                sr: attr.starRating,
+            };
+
+            socket.emit('beatmap star difficulty stats', stats);
         });
-
-        const stats: PartialDifficultyStats = {
-            id: content.id,
-            mods: content.mods,
-            sr: data.stars,
-        };
-
-        socket.emit('beatmap star difficulty stats', stats);
     });
 
     // Socket.on('gosu', (data: Gosu) => {
