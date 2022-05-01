@@ -90,7 +90,6 @@
         "needle": "^3.1.0",
         "osu-api-extended": "^2.1.5",
         "osu-bma": "file:deps/osu-bma-1.0.0.tgz",
-        "rosu-pp": "^0.5.3",
         "socket.io": "^4.4.1",
         "tslib": "^2.3.1"
     }

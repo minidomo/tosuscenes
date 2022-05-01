@@ -4,7 +4,6 @@ import { createServer } from 'http';
 import * as fs from 'fs';
 import * as path from 'path';
 import { auth, v2 } from 'osu-api-extended';
-// Import { calculate } from 'rosu-pp';
 import { beatmapAttributes } from 'osu-bma';
 
 // Import * as needle from 'needle';
