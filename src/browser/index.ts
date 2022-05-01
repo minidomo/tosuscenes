@@ -496,6 +496,16 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
         return gosu.tourney.manager.ipcState !== 0;
     }
 
+    function scrollDownChat() {
+        matchChatContainer.animate({
+            scrollTop: matchChatContainer.prop('scrollHeight'),
+        }, {
+            complete() {
+                removeUnseenMessages(matchChatContainer);
+            },
+        });
+    }
+
     function handleData(dataString: string) {
         if (CONFIG === undefined) return;
         const gosu = JSON.parse(dataString) as Gosu;
@@ -549,6 +559,7 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                     score.blue.animation.update(0);
                     score.red.value = 0;
                     score.blue.value = 0;
+                    scrollDownChat();
                 }
                 prevScoreVisible = manager.bools.scoreVisible;
             }
@@ -625,13 +636,7 @@ function initGosuSocket(serverSocket: Socket<DefaultEventsMap, DefaultEventsMap>
                     matchChatContainer.append(chatMessageDiv);
                 }
 
-                matchChatContainer.animate({
-                    scrollTop: matchChatContainer.prop('scrollHeight'),
-                }, {
-                    complete() {
-                        removeUnseenMessages(matchChatContainer);
-                    },
-                });
+                scrollDownChat();
                 prevChatMessageNum = manager.chat.length;
             }
         }
